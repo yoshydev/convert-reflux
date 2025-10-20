@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "node build-config.js",
     "start": "node build-config.js && electron .",
-    "dev": "node build-config.js && electron . --enable-logging",
+    "dev": "node build-config.js && cross-env NODE_ENV=development electron . --enable-logging",
     "build": "npm run prebuild && electron-builder",
     "build:mac": "npm run prebuild && electron-builder --mac",
     "build:win": "npm run prebuild && electron-builder --win"
@@ -23,9 +23,10 @@
     "dotenv": "^16.4.0",
     "electron": "^38.3.0",
     "electron-store": "^8.1.0",
-    "googleapis": "^128.0.0"
+    "googleapis": "128.0.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "electron-builder": "^24.9.0"
   },
   "build": {

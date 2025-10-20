@@ -12,16 +12,31 @@ function createWindow() {
     height: 700,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      contextIsolation: true,
       nodeIntegration: false,
-      defaultEncoding: 'utf-8'
+      defaultEncoding: 'utf-8',
+      devTools: true,
+      // DevTools の警告を抑制
+      enableRemoteModule: false,
+      contextIsolation: true
     }
   });
 
   mainWindow.loadFile('index.html');
 
-  // 開発中は常にDevToolsを開く
-  mainWindow.webContents.openDevTools();
+  // DevTools を開く際にコンソールの警告を抑制
+  if (process.env.NODE_ENV === 'development') {
+    mainWindow.webContents.openDevTools({
+      mode: 'detach',
+      activate: false
+    });
+
+    // Autofill エラーを無視
+    mainWindow.webContents.on('console-message', (event, level, message) => {
+      if (message.includes('Autofill')) {
+        event.preventDefault();
+      }
+    });
+  }
 
   // IPCハンドラーを登録
   registerIpcHandlers(mainWindow);
