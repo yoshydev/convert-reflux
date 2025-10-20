@@ -1,0 +1,36 @@
+node_modules/
+dist/
+*.log
+.DS_Store
+Thumbs.db
+.idea
+
+# 環境変数ファイル（機密情報）
+.env
+.env.local
+.env.production
+
+# ビルド時に生成される設定ファイル（機密情報を含む）
+config.js
+
+# Google認証関連
+credentials.json
+token.json
+{
+  "name": "tsv-to-csv-converter",
+  "version": "1.0.0",
+  "description": "TSVファイルをCSVに変換してGoogle Driveにアップロードするアプリケーション",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --enable-logging"
+  },
+  "keywords": ["electron", "tsv", "csv", "google-drive"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^28.0.0",
+    "googleapis": "^128.0.0"
+  },
+  "devDependencies": {}
+}
