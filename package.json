@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "node build-config.js",
     "start": "node build-config.js && electron .",
-    "dev": "node build-config.js && cross-env NODE_ENV=development electron . --enable-logging",
+    "dev": "node run-dev.js",
     "build": "npm run prebuild && electron-builder",
     "build:mac": "npm run prebuild && electron-builder --mac",
     "build:win": "npm run prebuild && electron-builder --win"
