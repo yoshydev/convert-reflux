@@ -3,8 +3,8 @@
  */
 import state from './state.js';
 import elements from './dom.js';
-import { initializeSettings, saveOutputFileName } from './settings.js';
-import { handleFileSelect, handleConvert } from './handlers/file-handler.js';
+import { initializeSettings } from './settings.js';
+import { handleFileSelect } from './handlers/file-handler.js';
 import {
   handleSaveCredentials,
   handleAuthenticate,
@@ -23,10 +23,6 @@ function registerEventListeners() {
     handleFileSelect(elements, state);
   });
 
-  // CSV変換
-  elements.convertBtn.addEventListener('click', () => {
-    handleConvert(elements, state, saveOutputFileName);
-  });
 
   // 認証情報保存
   elements.saveCredentialsBtn.addEventListener('click', () => {

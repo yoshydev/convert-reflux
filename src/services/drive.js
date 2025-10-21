@@ -1,5 +1,5 @@
 const { google } = require('googleapis');
-const fs = require('fs').promises;
+const fs = require('fs');
 const path = require('path');
 const config = require('../utils/config');
 
@@ -67,7 +67,6 @@ async function uploadToDrive(oauth2Client, filePath, fileName) {
   const folderId = await getOrCreateAppFolder(drive);
 
   const uploadFileName = fileName || path.basename(filePath);
-  const fileContent = await fs.readFile(filePath);
 
   const searchQuery = `name='${uploadFileName}' and '${folderId}' in parents and trashed=false`;
 
@@ -86,7 +85,7 @@ async function uploadToDrive(oauth2Client, filePath, fileName) {
       fileId: fileId,
       media: {
         mimeType: 'text/csv',
-        body: fileContent
+        body: fs.createReadStream(filePath)
       }
     });
     action = 'updated';
@@ -98,7 +97,7 @@ async function uploadToDrive(oauth2Client, filePath, fileName) {
 
     const media = {
       mimeType: 'text/csv',
-      body: fileContent
+      body: fs.createReadStream(filePath)
     };
 
     const file = await drive.files.create({

@@ -4,7 +4,6 @@
 class DOMElements {
   constructor() {
     this.selectFileBtn = document.getElementById('selectFile');
-    this.convertBtn = document.getElementById('convertBtn');
     this.saveCredentialsBtn = document.getElementById('saveCredentialsBtn');
     this.authenticateBtn = document.getElementById('authenticateBtn');
     this.clearCredentialsBtn = document.getElementById('clearCredentialsBtn');
@@ -15,7 +14,6 @@ class DOMElements {
     this.authStatusDiv = document.getElementById('authStatus');
     this.buildConfigStatus = document.getElementById('buildConfigStatus');
     this.credentialsForm = document.getElementById('credentialsForm');
-    this.outputFileName = document.getElementById('outputFileName');
     this.clientId = document.getElementById('clientId');
     this.clientSecret = document.getElementById('clientSecret');
   }

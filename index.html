@@ -21,20 +21,9 @@
         <div id="selectedFile" class="info-box"></div>
       </section>
 
-      <!-- ステップ2: 変換設定 -->
+      <!-- ステップ2: Google Drive設定 -->
       <section class="card">
-        <h2>ステップ2: 変換設定</h2>
-        <div class="form-group">
-          <label for="outputFileName">出力ファイル名（オプション）:</label>
-          <input type="text" id="outputFileName" placeholder="例: inf_score.csv" />
-          <small>空欄の場合は元のファイル名で .csv 拡張子になります</small>
-        </div>
-        <button id="convertBtn" class="btn btn-secondary" disabled>🔄 CSV に変換</button>
-      </section>
-
-      <!-- ステップ3: Google Drive設定 -->
-      <section class="card">
-        <h2>ステップ3: Google Drive 連携（オプション）</h2>
+        <h2>ステップ2: Google Drive 連携（オプション）</h2>
         <div id="buildConfigStatus" class="info-box" style="display: none;"></div>
         <div id="credentialsForm">
           <div class="form-group">
@@ -43,10 +32,10 @@
           </div>
           <div class="form-group">
             <label for="clientSecret">Client Secret:</label>
-            <input type="password" id="clientSecret" placeholder="Client Secret" />
+            <input type="password" id="clientSecret" placeholder="Google Cloud ConsoleのClient Secret" />
           </div>
           <div class="info-box">
-            <strong>📁 アップロード先:</strong> アプリが自動的に「TSV to CSV Uploads」フォルダを作成します。
+            <strong>📁 アップロード先:</strong> アプリが自動的に「Convert-Reflux」フォルダを作成します。
           </div>
           <div class="button-group">
             <button id="saveCredentialsBtn" class="btn btn-secondary">💾 認証情報を保存</button>
@@ -58,9 +47,10 @@
         <div id="authStatus" class="info-box"></div>
       </section>
 
-      <!-- ステップ4: アップロード -->
+      <!-- ステップ3: アップロード -->
       <section class="card">
-        <h2>ステップ4: Google Driveにアップロード</h2>
+        <h2>ステップ3: Google Driveにアップロード</h2>
+        <p>アップロード時に自動的に「inf_score.csv」に変換されます</p>
         <button id="uploadBtn" class="btn btn-success" disabled>☁️ Google Driveにアップロード</button>
       </section>
 

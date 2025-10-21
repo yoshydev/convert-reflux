@@ -17,7 +17,7 @@ const CLIENT_ID = buildConfig.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = buildConfig.GOOGLE_CLIENT_SECRET;
 
 // アプリ専用のフォルダ名
-const APP_FOLDER_NAME = 'TSV to CSV Uploads';
+const APP_FOLDER_NAME = 'Convert-Reflux';
 
 // 暗号化されたストアの初期化
 const store = new Store({
