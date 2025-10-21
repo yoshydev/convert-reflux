@@ -81,8 +81,13 @@ async function initializeApp() {
   // イベントリスナーを登録
   registerEventListeners();
 
-  // 初期メッセージを表示
-  elements.updateStatus('設定を完了してください', 'info');
+  // 初期メッセージを表示と初期タブ設定
+  if (state.isSetupComplete()) {
+    elements.switchTab('upload');
+    elements.updateStatus('ファイルをアップロードできます', 'success');
+  } else {
+    elements.updateStatus('設定を完了してください', 'info');
+  }
 }
 
 // アプリケーション起動

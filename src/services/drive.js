@@ -112,7 +112,7 @@ async function uploadToDrive(oauth2Client, filePath, fileName) {
 
   const fileInfo = await drive.files.get({
     fileId: fileId,
-    fields: 'id, name, webViewLink'
+    fields: 'id, name, webViewLink, modifiedTime'
   });
 
   const folderInfo = await drive.files.get({

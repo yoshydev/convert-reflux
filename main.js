@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 const path = require('path');
 const { registerIpcHandlers } = require('./src/handlers/ipc-handlers');
 const auth = require('./src/services/auth');
@@ -20,6 +20,9 @@ function createWindow() {
     }
   });
 
+  // IPCハンドラーをHTMLロード前に登録
+  registerIpcHandlers(mainWindow);
+
   mainWindow.loadFile('index.html');
 
   // 本番環境ではメニューを削除(DevToolsショートカットも無効化)
@@ -29,36 +32,34 @@ function createWindow() {
 
   // DevTools を開く際にコンソールの警告を抑制
   if (process.env.NODE_ENV === 'development') {
+    // Autofill エラーを抑制するために、DevToolsを開く前にセッションを設定
+    mainWindow.webContents.session.webRequest.onBeforeRequest({ urls: ['devtools://*'] }, (details, callback) => {
+      callback({});
+    });
+
     mainWindow.webContents.openDevTools({
       mode: 'detach',
       activate: false
     });
-
-    // Autofill エラーを無視
-    mainWindow.webContents.on('console-message', (event, level, message) => {
-      if (message.includes('Autofill')) {
-        event.preventDefault();
-      }
-    });
-
-    mainWindow.webContents.on('before-input-event', (event, input) => {
-      // 本番環境でDevToolsのショートカットを無効化
-      if (process.env.NODE_ENV !== 'development') {
-        if (
-          (input.control || input.meta) && input.shift && input.key.toLowerCase() === 'i' ||
-          input.key === 'F12'
-        ) {
-          event.preventDefault();
-        }
-      }
-    });
   }
 
-  // IPCハンドラーを登録
-  registerIpcHandlers(mainWindow);
+  mainWindow.webContents.on('before-input-event', (event, input) => {
+    // 本番環境でDevToolsのショートカットを無効化
+    if (process.env.NODE_ENV !== 'development') {
+      if (
+        (input.control || input.meta) && input.shift && input.key.toLowerCase() === 'i' ||
+        input.key === 'F12'
+      ) {
+        event.preventDefault();
+      }
+    }
+  });
 }
 
-app.whenReady().then(createWindow);
+// アプリ起動前にIPCハンドラーを先行登録
+app.whenReady().then(() => {
+  createWindow();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
