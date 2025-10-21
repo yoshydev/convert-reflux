@@ -40,6 +40,28 @@ export function registerIpcHandlers(mainWindow: BrowserWindow): void {
     }
   });
 
+  // TSVファイルパスを保存
+  ipcMain.handle('save-tsv-path', async (_event, tsvPath: string) => {
+    try {
+      config.saveTsvPath(tsvPath);
+      return { success: true };
+    } catch (error) {
+      console.error('Save TSV path error:', error);
+      return { success: false, error: (error as Error).message };
+    }
+  });
+
+  // TSVファイルパスを取得
+  ipcMain.handle('get-tsv-path', async () => {
+    try {
+      const tsvPath = config.getTsvPath();
+      return { success: true, tsvPath };
+    } catch (error) {
+      console.error('Get TSV path error:', error);
+      return { success: false, error: (error as Error).message };
+    }
+  });
+
   // 認証情報をクリア
   ipcMain.handle('clear-credentials', async () => {
     try {
@@ -65,7 +87,16 @@ export function registerIpcHandlers(mainWindow: BrowserWindow): void {
   // トークンを設定
   ipcMain.handle('set-tokens', async (_event, tokens: any) => {
     try {
-      auth.restoreOAuth2Client(tokens);
+      // tokensがnullの場合は保存済みトークンで復元を試みる
+      if (tokens === null) {
+        const savedTokens = config.getTokens();
+        if (!savedTokens) {
+          return { success: false, error: 'トークンが保存されていません' };
+        }
+        auth.restoreOAuth2Client(savedTokens);
+      } else {
+        auth.restoreOAuth2Client(tokens);
+      }
       return { success: true };
     } catch (error) {
       console.error('Set tokens error:', error);

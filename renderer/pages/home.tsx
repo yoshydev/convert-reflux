@@ -18,9 +18,9 @@ export default function HomePage() {
     const initialize = async () => {
       try {
         // 保存されたTSVパスを読み込み
-        const savedPath = localStorage.getItem('configuredTsvPath')
-        if (savedPath) {
-          setTsvPath(savedPath)
+        const tsvPathResult = await window.electronAPI.getTsvPath()
+        if (tsvPathResult.success && tsvPathResult.tsvPath) {
+          setTsvPath(tsvPathResult.tsvPath)
         }
 
         // ビルド時の設定を確認
@@ -43,7 +43,7 @@ export default function HomePage() {
         }
 
         // セットアップ完了していればアップロードタブに切り替え
-        if (savedPath && result.success) {
+        if (tsvPathResult.success && tsvPathResult.tsvPath && result.success) {
           setActiveTab('upload')
           setStatus({ message: 'ファイルをアップロードできます', type: 'success' })
         }
@@ -76,8 +76,13 @@ export default function HomePage() {
       const filePath = await window.electronAPI.selectFile()
       if (filePath) {
         setTsvPath(filePath)
-        localStorage.setItem('configuredTsvPath', filePath)
-        setStatus({ message: 'TSVファイルパスを設定しました', type: 'success' })
+        // electron-storeに保存
+        const saveResult = await window.electronAPI.saveTsvPath(filePath)
+        if (saveResult.success) {
+          setStatus({ message: 'TSVファイルパスを設定しました', type: 'success' })
+        } else {
+          setStatus({ message: `設定の保存に失敗しました: ${saveResult.error}`, type: 'error' })
+        }
       }
     } catch (error) {
       console.error('ファイル選択エラー:', error)
@@ -392,7 +397,7 @@ export default function HomePage() {
           </main>
 
           <footer className="text-center mt-8 text-gray-600">
-            <p>設定はlocalStorageに保存されます</p>
+            <p>設定はelectron-storeで安全に保存されます</p>
           </footer>
         </div>
       </div>

@@ -66,6 +66,7 @@ export function clearCredentials(): void {
   store.delete('google.clientSecret');
   store.delete('google.folderId');
   store.delete('google.tokens');
+  // TSVパスはクリアしない - ユーザーが設定したパス情報は保持
 }
 
 /**
@@ -101,6 +102,27 @@ export function getFolderId(): string | undefined {
  */
 export function resetFolderId(): void {
   store.delete('google.folderId');
+}
+
+/**
+ * TSVファイルパスを保存
+ */
+export function saveTsvPath(tsvPath: string): void {
+  store.set('app.tsvPath', tsvPath);
+}
+
+/**
+ * TSVファイルパスを取得
+ */
+export function getTsvPath(): string | undefined {
+  return store.get('app.tsvPath') as string | undefined;
+}
+
+/**
+ * TSVファイルパスをクリア
+ */
+export function clearTsvPath(): void {
+  store.delete('app.tsvPath');
 }
 
 /**

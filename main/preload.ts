@@ -8,6 +8,12 @@ export interface ElectronAPI {
   // ファイル選択
   selectFile: () => Promise<string | null>;
 
+  // TSVファイルパスを保存
+  saveTsvPath: (tsvPath: string) => Promise<{ success: boolean; error?: string }>;
+
+  // TSVファイルパスを取得
+  getTsvPath: () => Promise<{ success: boolean; tsvPath?: string; error?: string }>;
+
   // TSVからCSVへの変換
   convertTsvToCsv: (tsvPath: string, outputFileName?: string) => Promise<{
     success: boolean;
@@ -46,6 +52,8 @@ export interface ElectronAPI {
 const electronAPI: ElectronAPI = {
   getBuildConfig: () => ipcRenderer.invoke('get-build-config'),
   selectFile: () => ipcRenderer.invoke('select-tsv-file'),
+  saveTsvPath: (tsvPath) => ipcRenderer.invoke('save-tsv-path', tsvPath),
+  getTsvPath: () => ipcRenderer.invoke('get-tsv-path'),
   convertTsvToCsv: (tsvPath, outputFileName) => ipcRenderer.invoke('convert-tsv-to-csv', tsvPath, outputFileName),
   clearCredentials: () => ipcRenderer.invoke('clear-credentials'),
   initGoogleAuth: (credentials) => ipcRenderer.invoke('init-google-auth', credentials),
