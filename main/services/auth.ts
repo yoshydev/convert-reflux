@@ -5,63 +5,9 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import * as config from '../utils/config';
 import { isWSL, openUrlInWSL } from '../utils/wsl';
+import { getAuthPageHTML } from './auth-page-renderer';
 
 let oauth2Client: any = null;
-let authPageTemplate: string | null = null;
-
-/**
- * 認証ページのHTMLテンプレートを読み込む
- */
-function loadAuthPageTemplate(): string {
-    if (!authPageTemplate) {
-        const templatePath = path.join(__dirname, 'auth-page.html');
-        const fsSync = require('fs');
-        authPageTemplate = fsSync.readFileSync(templatePath, 'utf-8');
-    }
-    return authPageTemplate;
-}
-
-/**
- * 認証結果ページのHTMLを生成
- * @param type - 'success', 'error', 'cancelled'
- * @returns HTML文字列
- */
-function getAuthPageHTML(type: 'success' | 'error' | 'cancelled'): string {
-    const contents = {
-        success: {
-            icon: '✓',
-            iconClass: 'success',
-            title: '認証が完了しました！',
-            message: 'Google Driveへの接続に成功しました。',
-            instruction: 'このウィンドウを閉じて、アプリに戻ってファイルのアップロードを開始できます。'
-        },
-        error: {
-            icon: '✕',
-            iconClass: 'error',
-            title: '認証に失敗しました',
-            message: '認証処理中にエラーが発生しました。',
-            instruction: 'このウィンドウを閉じて、アプリから再度認証をお試しください。問題が解決しない場合は、設定をご確認ください。'
-        },
-        cancelled: {
-            icon: '!',
-            iconClass: 'cancelled',
-            title: '認証がキャンセルされました',
-            message: '認証プロセスが中断されました。',
-            instruction: 'このウィンドウを閉じて、もう一度認証を行う場合はアプリから操作してください。'
-        }
-    };
-
-    const content = contents[type] || contents.error;
-    const template = loadAuthPageTemplate();
-
-    // テンプレートのプレースホルダーを置換
-    return template
-        .replace(/\{\{TITLE\}\}/g, content.title)
-        .replace(/\{\{ICON\}\}/g, content.icon)
-        .replace(/\{\{ICON_CLASS\}\}/g, content.iconClass)
-        .replace(/\{\{MESSAGE\}\}/g, content.message)
-        .replace(/\{\{INSTRUCTION\}\}/g, content.instruction);
-}
 
 /**
  * OAuth2クライアントを取得
