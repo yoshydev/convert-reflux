@@ -22,12 +22,12 @@ if (fs.existsSync(envPath) && !process.env.GOOGLE_CLIENT_ID) {
 const clientId = process.env.GOOGLE_CLIENT_ID || '';
 const clientSecret = process.env.GOOGLE_CLIENT_SECRET || '';
 
-// 設定ファイルを生成
+// 設定ファイルを生成（JSON.stringify()で安全にエスケープ）
 const configContent = `// このファイルはビルド時に自動生成されます
 // 環境変数 GOOGLE_CLIENT_ID と GOOGLE_CLIENT_SECRET から生成されます
 export const BUILD_CONFIG = {
-  GOOGLE_CLIENT_ID: '${clientId}',
-  GOOGLE_CLIENT_SECRET: '${clientSecret}',
+  GOOGLE_CLIENT_ID: ${JSON.stringify(clientId)},
+  GOOGLE_CLIENT_SECRET: ${JSON.stringify(clientSecret)},
 };
 `;
 
