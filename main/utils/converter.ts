@@ -1,6 +1,8 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
+import iconv from 'iconv-lite';
+
 // MODEの定義
 const MODES = ['SPB', 'SPN', 'SPH', 'SPA', 'SPL', 'DPN', 'DPH', 'DPA', 'DPL'] as const;
 type Mode = typeof MODES[number];
@@ -216,14 +218,17 @@ export async function convertTsvToCsv(
     // CSVヘッダーとデータを生成
     const csvHeader = 'LV,Title,mode,Lamp,Score,(rate),BP,Opt(best score),Opt(min bp),Last Played';
     const csvLines = [csvHeader, ...csvRecords.map(csvRecordToLine)];
-    const csvContent = csvLines.join('\n');
+    // CRLF改行コードを使用
+    const csvContent = csvLines.join('\r\n');
 
     // ファイル出力
     const dir = path.dirname(tsvPath);
     const finalOutputName = outputFileName || path.basename(tsvPath).replace(/\.tsv$/i, '.csv');
     const csvPath = path.join(dir, finalOutputName);
 
-    await fs.writeFile(csvPath, csvContent, 'utf-8');
+    // Shift_JIS（sjis）でエンコード
+    const encodedContent = iconv.encode(csvContent, 'Shift_JIS');
+    await fs.writeFile(csvPath, encodedContent);
 
     console.log(`変換完了: ${csvRecords.length} レコードを生成しました`);
 
