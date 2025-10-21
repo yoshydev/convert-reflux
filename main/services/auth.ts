@@ -1,10 +1,13 @@
-import { google } from 'googleapis';
-import { shell, BrowserWindow } from 'electron';
-import http from 'http';
 import { promises as fs } from 'fs';
+import http from 'http';
 import path from 'path';
+
+import { shell, BrowserWindow } from 'electron';
+import { google } from 'googleapis';
+
 import * as config from '../utils/config';
 import { isWSL, openUrlInWSL } from '../utils/wsl';
+
 import { getAuthPageHTML } from './auth-page-renderer';
 
 let oauth2Client: any = null;

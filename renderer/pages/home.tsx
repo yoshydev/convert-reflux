@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
+import React, { useEffect, useState } from 'react'
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState<'settings' | 'upload'>('settings')

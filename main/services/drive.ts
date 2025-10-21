@@ -1,6 +1,8 @@
-import { google } from 'googleapis';
 import fs from 'fs';
 import path from 'path';
+
+import { google } from 'googleapis';
+
 import * as config from '../utils/config';
 
 /**
@@ -85,7 +87,7 @@ export async function uploadToDrive(
     if (response.data.files && response.data.files.length > 0) {
         fileId = response.data.files[0].id as string;
         await drive.files.update({
-            fileId: fileId,
+            fileId,
             media: {
                 mimeType: 'text/csv',
                 body: fs.createReadStream(filePath)
@@ -110,7 +112,7 @@ export async function uploadToDrive(
     }
 
     const fileInfo = await drive.files.get({
-        fileId: fileId,
+        fileId,
         fields: 'id, name, webViewLink, modifiedTime'
     });
 

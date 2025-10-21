@@ -1,8 +1,10 @@
 import path from 'path'
+
 import { app, ipcMain, Menu } from 'electron'
 import serve from 'electron-serve'
-import { createWindow } from './helpers'
+
 import { registerIpcHandlers } from './handlers'
+import { createWindow } from './helpers'
 import * as auth from './services/auth'
 
 const isProd = process.env.NODE_ENV === 'production'
