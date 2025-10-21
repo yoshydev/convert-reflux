@@ -39,27 +39,6 @@ function registerIpcHandlers(mainWindow) {
     }
   });
 
-  // 認証情報を保存
-  ipcMain.handle('save-credentials', async (event, { clientId, clientSecret }) => {
-    try {
-      config.saveCredentials(clientId, clientSecret);
-      return { success: true };
-    } catch (error) {
-      console.error('Save credentials error:', error);
-      return { success: false, error: error.message };
-    }
-  });
-
-  // 認証情報を取得
-  ipcMain.handle('get-credentials', async () => {
-    try {
-      return config.getCredentials();
-    } catch (error) {
-      console.error('Get credentials error:', error);
-      return { clientId: '', clientSecret: '' };
-    }
-  });
-
   // 認証情報をクリア
   ipcMain.handle('clear-credentials', async () => {
     try {
@@ -71,17 +50,6 @@ function registerIpcHandlers(mainWindow) {
     }
   });
 
-  // フォルダIDをリセット
-  ipcMain.handle('reset-folder', async () => {
-    try {
-      config.resetFolderId();
-      return { success: true };
-    } catch (error) {
-      console.error('Reset folder error:', error);
-      return { success: false, error: error.message };
-    }
-  });
-
   // Google Drive認証の初期化
   ipcMain.handle('init-google-auth', async (event, credentials) => {
     try {
@@ -89,17 +57,6 @@ function registerIpcHandlers(mainWindow) {
       return result;
     } catch (error) {
       console.error('Auth init error:', error);
-      return { success: false, error: error.message };
-    }
-  });
-
-  // 認証コードからトークンを取得
-  ipcMain.handle('exchange-auth-code', async (event, code) => {
-    try {
-      const tokens = await auth.exchangeAuthCode(code);
-      return { success: true, tokens };
-    } catch (error) {
-      console.error('Token exchange error:', error);
       return { success: false, error: error.message };
     }
   });
@@ -125,22 +82,6 @@ function registerIpcHandlers(mainWindow) {
       console.error('Upload error:', error);
       return { success: false, error: error.message };
     }
-  });
-
-  // 保存ダイアログ
-  ipcMain.handle('save-dialog', async (event, defaultName) => {
-    const result = await dialog.showSaveDialog(mainWindow, {
-      defaultPath: defaultName,
-      filters: [
-        { name: 'CSV Files', extensions: ['csv'] },
-        { name: 'All Files', extensions: ['*'] }
-      ]
-    });
-
-    if (result.canceled) {
-      return null;
-    }
-    return result.filePath;
   });
 }
 

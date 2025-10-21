@@ -4,7 +4,6 @@
 import state from './state.js';
 import elements from './dom.js';
 import { initializeSettings, updateSetupStatus } from './settings.js';
-import { handleFileSelect } from './handlers/file-handler.js';
 import {
   handleAuthenticate,
   handleAuthSuccess,

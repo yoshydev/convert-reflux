@@ -181,26 +181,10 @@ async function initGoogleAuth(credentials, mainWindow) {
   }
 }
 
-/**
- * 認証コードからトークンを取得
- */
-async function exchangeAuthCode(code) {
-  if (!oauth2Client) {
-    throw new Error('OAuth2クライアントが初期化されていません');
-  }
-
-  const { tokens } = await oauth2Client.getToken(code);
-  oauth2Client.setCredentials(tokens);
-  config.saveTokens(tokens);
-
-  return tokens;
-}
-
 module.exports = {
   getOAuth2Client,
   createOAuth2Client,
   restoreOAuth2Client,
   clearOAuth2Client,
-  initGoogleAuth,
-  exchangeAuthCode
+  initGoogleAuth
 };
