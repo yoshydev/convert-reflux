@@ -1,19 +1,18 @@
-node_modules/
-dist/
-*.log
-.DS_Store
-Thumbs.db
-.idea
+# dependencies
+node_modules
 
 # 環境変数ファイル（機密情報）
 .env
 .env.local
 .env.production
 
-# ビルド時に生成される設定ファイル（機密情報を含む）
-# ルートのconfig.jsのみを除外（src/utils/config.jsは含める）
-/config.js
+# logs
+*.log
 
-# Google認証関連
-credentials.json
-token.json
+# next.js
+.next
+next-env.d.ts
+
+# build
+/app
+dist

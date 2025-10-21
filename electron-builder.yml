@@ -1,0 +1,18 @@
+appId: com.yoshydev.reflux-converter
+productName: Reflux Converter
+copyright: Copyright © 2025 Yoshihide Shiono
+directories:
+  output: dist
+  buildResources: resources
+files:
+  - from: .
+    filter:
+      - package.json
+      - app
+      - config.js
+extraResources:
+  - from: main/services
+    to: services
+    filter:
+      - auth-page.html
+publish: null
