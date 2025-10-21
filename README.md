@@ -4,7 +4,7 @@ Reflux形式のTSVファイルを任意の形式に変換するデスクトッ�
 
 ## 概要
 
-Reflux Converterは、Reflux（リフラックス）で出力されるTSVファイルを、Infinitas打鍵カウンターのCSV形式に変換するためのフリーウェアです。主にTrackBrowserで使用することを想定しています。
+Reflux Converterは、[Reflux](https://github.com/olji/Reflux)で出力されるTSVファイルを、[Infinitas打鍵カウンタ](https://github.com/dj-kata/inf_daken_counter_obsw)のCSV形式に変換するためのフリーウェアです。主にTrackBrowserで使用することを想定しています。
 
 ## 主な機能
 

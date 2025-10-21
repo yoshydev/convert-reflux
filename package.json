@@ -6,6 +6,10 @@
   "author": "yoshydev <24353896+yoshydev@users.noreply.github.com>",
   "license": "MIT",
   "main": "app/background.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yoshydev/convert-reflux.git"
+  },
   "scripts": {
     "dev": "nextron",
     "build": "nextron build",
