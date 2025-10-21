@@ -17,8 +17,8 @@ export function useTsvFile() {
         if (tsvPathResult.success && tsvPathResult.tsvPath) {
           setTsvPath(tsvPathResult.tsvPath)
         }
-      } catch (error) {
-        console.error('TSVパス初期化エラー:', error)
+      } catch {
+        // TSVパス初期化エラーは無視
       }
     }
 
@@ -39,7 +39,6 @@ export function useTsvFile() {
         }
       }
     } catch (error) {
-      console.error('ファイル選択エラー:', error)
       setStatus({ message: `ファイル選択に失敗しました: ${error}`, type: 'error' })
     }
   }

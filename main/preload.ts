@@ -33,20 +33,20 @@ export interface ElectronAPI {
   }>;
 
   // トークンの設定
-  setTokens: (tokens: any) => Promise<{ success: boolean; error?: string }>;
+  setTokens: (tokens: Record<string, unknown> | null) => Promise<{ success: boolean; error?: string }>;
 
   // Google Driveへのアップロード
   uploadToDrive: (params: { filePath: string; fileName?: string }) => Promise<{
     success: boolean;
     fileId?: string;
     action?: string;
-    fileInfo?: any;
-    folderInfo?: any;
+    fileInfo?: Record<string, unknown>;
+    folderInfo?: Record<string, unknown>;
     error?: string;
   }>;
 
   // 認証成功イベントのリスナー
-  onAuthSuccess: (callback: (data: { tokens: any }) => void) => () => void;
+  onAuthSuccess: (callback: (data: { tokens: Record<string, unknown> }) => void) => () => void;
 
   // ウィンドウを閉じる
   closeWindow: () => Promise<{ success: boolean; error?: string }>;
@@ -63,7 +63,7 @@ const electronAPI: ElectronAPI = {
   setTokens: (tokens) => ipcRenderer.invoke('set-tokens', tokens),
   uploadToDrive: (params) => ipcRenderer.invoke('upload-to-drive', params),
   onAuthSuccess: (callback) => {
-    const subscription = (_event: IpcRendererEvent, data: { tokens: any }) => callback(data);
+    const subscription = (_event: IpcRendererEvent, data: { tokens: Record<string, unknown> }) => callback(data);
     ipcRenderer.on('auth-success', subscription);
     return () => {
       ipcRenderer.removeListener('auth-success', subscription);

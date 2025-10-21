@@ -116,7 +116,7 @@ export function UploadTab({
           shadow="medium"
         >
           <StatusIndicator
-            type={status.type as any}
+            type={status.type}
             message={status.message}
             size="md"
           />

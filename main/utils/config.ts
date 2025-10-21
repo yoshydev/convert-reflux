@@ -72,15 +72,15 @@ export function clearCredentials(): void {
 /**
  * トークンを保存
  */
-export function saveTokens(tokens: any): void {
+export function saveTokens(tokens: Record<string, unknown>): void {
   store.set('google.tokens', tokens);
 }
 
 /**
  * トークンを取得
  */
-export function getTokens(): any {
-  return store.get('google.tokens');
+export function getTokens(): Record<string, unknown> | undefined {
+  return store.get('google.tokens') as Record<string, unknown> | undefined;
 }
 
 /**

@@ -5,6 +5,9 @@ import * as drive from '../services/drive';
 import * as config from '../utils/config';
 import { convertTsvToCsv } from '../utils/converter';
 
+// Auth.Credentialsの代わりに使用する型
+type AuthCredentials = Record<string, unknown>;
+
 /**
  * すべてのIPCハンドラーを登録
  */
@@ -85,7 +88,7 @@ export function registerIpcHandlers(mainWindow: BrowserWindow): void {
   });
 
   // トークンを設定
-  ipcMain.handle('set-tokens', async (_event, tokens: any) => {
+  ipcMain.handle('set-tokens', async (_event, tokens: AuthCredentials | null) => {
     try {
       // tokensがnullの場合は保存済みトークンで復元を試みる
       if (tokens === null) {

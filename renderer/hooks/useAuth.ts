@@ -31,8 +31,8 @@ export function useAuth() {
             type: 'success'
           })
         }
-      } catch (error) {
-        console.error('認証初期化エラー:', error)
+      } catch {
+        // 認証初期化エラーは無視
       }
     }
 
@@ -40,7 +40,9 @@ export function useAuth() {
 
     // 認証成功イベントのリスナーを設定
     const unsubscribe = window.electronAPI.onAuthSuccess((data) => {
-      console.log('認証成功:', data)
+      // トークン情報を受け取るが、現在は使用していない
+      // 将来的にトークンの有効期限チェックなどに使用可能
+      void data.tokens
       setIsAuthenticated(true)
       setAuthStatus({
         message: '✓ 認証成功! Google Driveにアップロードできます。',

@@ -43,11 +43,21 @@ export function useUpload({ tsvPath, isAuthenticated, setStatus }: UploadHookPro
         type: 'info'
       })
 
+      // csvPathが存在しない場合はエラー
+      if (!convertResult.csvPath) {
+        setStatus({
+          message: 'エラー: 変換されたCSVファイルのパスが取得できませんでした',
+          type: 'error'
+        })
+        setIsUploading(false)
+        return
+      }
+
       // 保存されたトークンを設定
       await window.electronAPI.setTokens(null)
 
       const result = await window.electronAPI.uploadToDrive({
-        filePath: convertResult.csvPath!,
+        filePath: convertResult.csvPath,
         fileName: 'inf_score.csv'
       })
 
