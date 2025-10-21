@@ -14,6 +14,14 @@
     </header>
 
     <main>
+      <!-- Google Drive設定 -->
+      <section class="card" id="authSection">
+        <h2>Google Drive 連携（オプション）</h2>
+        <button id="authenticateBtn" class="btn btn-secondary">🔐 Google Drive 認証</button>
+        <button id="disconnectBtn" class="btn btn-warning" style="display: none;">🔓 連携解除</button>
+        <div id="authStatus" class="info-box"></div>
+      </section>
+
       <!-- ステップ1: ファイル選択 -->
       <section class="card">
         <h2>ステップ1: TSVファイルを選択</h2>
@@ -21,16 +29,9 @@
         <div id="selectedFile" class="info-box"></div>
       </section>
 
-      <!-- ステップ2: Google Drive設定 -->
+      <!-- ステップ2: アップロード -->
       <section class="card">
-        <h2>ステップ2: Google Drive 連携（オプション）</h2>
-        <button id="authenticateBtn" class="btn btn-secondary">🔐 Google Drive 認証</button>
-        <div id="authStatus" class="info-box"></div>
-      </section>
-
-      <!-- ステップ3: アップロード -->
-      <section class="card">
-        <h2>ステップ3: Google Driveにアップロード</h2>
+        <h2>ステップ2: Google Driveにアップロード</h2>
         <p>アップロード時に自動的に「inf_score.csv」に変換されます</p>
         <button id="uploadBtn" class="btn btn-success" disabled>☁️ Google Driveにアップロード</button>
       </section>

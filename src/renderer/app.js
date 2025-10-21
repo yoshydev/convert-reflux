@@ -25,7 +25,12 @@ function registerEventListeners() {
     handleAuthenticate(elements, state);
   });
 
+  // 連携解除
+  elements.disconnectBtn.addEventListener('click', () => {
+    handleDisconnect(elements, state);
+  });
 
+  // Google Driveアップロード
   // Google Driveアップロード
   elements.uploadBtn.addEventListener('click', () => {
     handleUpload(elements, state);

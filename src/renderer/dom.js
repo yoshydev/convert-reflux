@@ -5,10 +5,12 @@ class DOMElements {
   constructor() {
     this.selectFileBtn = document.getElementById('selectFile');
     this.authenticateBtn = document.getElementById('authenticateBtn');
+    this.disconnectBtn = document.getElementById('disconnectBtn');
     this.uploadBtn = document.getElementById('uploadBtn');
     this.selectedFileDiv = document.getElementById('selectedFile');
     this.statusDiv = document.getElementById('status');
     this.authStatusDiv = document.getElementById('authStatus');
+    this.authSection = document.getElementById('authSection');
   }
 
   /**
@@ -35,6 +37,21 @@ class DOMElements {
     const fileName = filePath.split(/[\\/]/).pop();
     this.selectedFileDiv.textContent = `選択されたファイル: ${fileName}\nパス: ${filePath}`;
     this.selectedFileDiv.className = 'info-box success';
+  }
+
+  /**
+   * 認証状態に応じてUIを更新
+   */
+  updateAuthUI(isAuthenticated) {
+    if (isAuthenticated) {
+      this.authenticateBtn.style.display = 'none';
+      this.disconnectBtn.style.display = 'inline-block';
+      this.authSection.classList.add('authenticated');
+    } else {
+      this.authenticateBtn.style.display = 'inline-block';
+      this.disconnectBtn.style.display = 'none';
+      this.authSection.classList.remove('authenticated');
+    }
   }
 }
 

@@ -200,6 +200,22 @@ main {
   border-bottom-color: #4a5568;
 }
 
+/* 認証セクションのスタイル */
+#authSection {
+  transition: all 0.3s ease;
+}
+
+#authSection.authenticated {
+  opacity: 0.6;
+  font-size: 0.9em;
+  padding: 15px 20px;
+}
+
+#authSection.authenticated:hover {
+  opacity: 1;
+  transform: none;
+}
+
 .status-card .status-box {
   background: #1a202c;
   border-left-color: #90cdf4;

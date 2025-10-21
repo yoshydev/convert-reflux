@@ -25,6 +25,7 @@ export async function initializeSettings(elements, state) {
     if (result.success) {
       state.setAuthenticated(true);
       elements.updateAuthStatus('認証済み（保存されたトークンを使用）', 'success');
+      elements.updateAuthUI(true);
       elements.uploadBtn.disabled = false;
     }
   } catch (e) {

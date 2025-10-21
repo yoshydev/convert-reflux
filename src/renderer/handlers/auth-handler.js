@@ -84,6 +84,7 @@ export async function handleAuthenticate(elements, state) {
       // 認証成功
       state.setAuthenticated(true);
       elements.updateAuthStatus('✓ 認証成功! Google Driveにアップロードできます。', 'success');
+      elements.updateAuthUI(true);
 
       if (state.convertedFilePath) {
         elements.uploadBtn.disabled = false;
@@ -167,6 +168,7 @@ export async function handleResetFolder(elements) {
 export function handleAuthSuccess(elements, state, data) {
   console.log('認証成功:', data);
   state.setAuthenticated(true);
+  elements.updateAuthUI(true);
   elements.updateAuthStatus('✓ 認証成功! Google Driveにアップロードできます。', 'success');
 
   if (state.convertedFilePath) {
@@ -174,4 +176,35 @@ export function handleAuthSuccess(elements, state, data) {
   }
 
   elements.authenticateBtn.disabled = false;
+}
+/**
+ * 連携解除ハンドラー
+ */
+export async function handleDisconnect(elements, state) {
+  if (!confirm('Google Driveとの連携を解除しますか？\n保存されている認証情報とトークンがすべて削除されます。')) {
+    return;
+  }
+
+  try {
+    elements.disconnectBtn.disabled = true;
+    elements.updateAuthStatus('連携を解除中...', 'info');
+
+    const result = await window.electronAPI.clearCredentials();
+
+    if (result.success) {
+      state.setAuthenticated(false);
+      state.setTokens(null);
+
+      elements.updateAuthStatus('連携を解除しました', 'info');
+      elements.updateAuthUI(false);
+      elements.uploadBtn.disabled = true;
+      elements.disconnectBtn.disabled = false;
+    } else {
+      elements.updateAuthStatus(`エラー: ${result.error}`, 'error');
+      elements.disconnectBtn.disabled = false;
+    }
+  } catch (error) {
+    elements.updateAuthStatus(`エラー: ${error.message}`, 'error');
+    elements.disconnectBtn.disabled = false;
+  }
 }
