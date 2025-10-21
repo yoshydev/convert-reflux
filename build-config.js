@@ -16,7 +16,7 @@ if (!config.GOOGLE_CLIENT_ID || !config.GOOGLE_CLIENT_SECRET) {
   console.warn('   GOOGLE_CLIENT_ID=your_client_id');
   console.warn('   GOOGLE_CLIENT_SECRET=your_client_secret');
 }
-  console.warn('   注意: アプリが自動的にGoogle Driveにフォルダを作成します。');
+console.warn('   注意: アプリが自動的にGoogle Driveにフォルダを作成します。');
 
 // config.jsを生成
 const configContent = `// このファイルは自動生成されます。直接編集しないでください。
