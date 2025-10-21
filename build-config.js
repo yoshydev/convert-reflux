@@ -15,8 +15,6 @@ if (!config.GOOGLE_CLIENT_ID || !config.GOOGLE_CLIENT_SECRET) {
   console.warn('   .env ファイルを作成し、以下の内容を設定してください:');
   console.warn('   GOOGLE_CLIENT_ID=your_client_id');
   console.warn('   GOOGLE_CLIENT_SECRET=your_client_secret');
-  console.warn('   GOOGLE_FOLDER_ID=your_folder_id (オプション)');
-  console.warn('   認証情報なしで起動します。アプリ内で入力する必要があります。');
 }
   console.warn('   注意: アプリが自動的にGoogle Driveにフォルダを作成します。');
 
