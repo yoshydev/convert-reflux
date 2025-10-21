@@ -83,21 +83,10 @@
           <button id="editSettingsBtn" class="btn btn-small btn-secondary">⚙️ 設定を編集</button>
         </section>
 
-        <!-- ファイル選択（手動選択の場合） -->
-        <section class="card">
-          <h2>📄 ファイル確認</h2>
-          <p class="section-description">設定されたTSVファイルを使用、または別のファイルを選択できます</p>
-          <div class="button-group">
-            <button id="useConfiguredFile" class="btn btn-primary">✓ 設定ファイルを使用</button>
-            <button id="selectFile" class="btn btn-secondary">📁 別のファイルを選択</button>
-          </div>
-          <div id="selectedFile" class="info-box"></div>
-        </section>
-
         <!-- アップロード実行 -->
         <section class="card upload-section">
           <h2>☁️ Google Driveにアップロード</h2>
-          <p class="section-description">アップロード時に自動的に「inf_score.csv」に変換されます</p>
+          <p class="section-description">設定されたTSVファイルを「inf_score.csv」に変換してアップロードします</p>
           <button id="uploadBtn" class="btn btn-success btn-large" disabled>
             ☁️ Google Driveにアップロード
           </button>

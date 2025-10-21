@@ -18,8 +18,6 @@ class DOMElements {
     this.setupMessage = document.getElementById('setupMessage');
 
     // アップロード画面の要素
-    this.selectFileBtn = document.getElementById('selectFile');
-    this.useConfiguredFileBtn = document.getElementById('useConfiguredFile');
     this.editSettingsBtn = document.getElementById('editSettingsBtn');
     this.summaryTsvPath = document.getElementById('summaryTsvPath');
     this.summaryAuthStatus = document.getElementById('summaryAuthStatus');
@@ -28,7 +26,6 @@ class DOMElements {
     this.authenticateBtn = document.getElementById('authenticateBtn');
     this.disconnectBtn = document.getElementById('disconnectBtn');
     this.uploadBtn = document.getElementById('uploadBtn');
-    this.selectedFileDiv = document.getElementById('selectedFile');
     this.statusDiv = document.getElementById('status');
     this.authStatusDiv = document.getElementById('authStatus');
   }
@@ -52,15 +49,6 @@ class DOMElements {
 
   /**
    * 選択されたファイル情報を表示
-   */
-  showSelectedFile(filePath) {
-    const fileName = filePath.split(/[\\/]/).pop();
-    this.selectedFileDiv.textContent = `選択されたファイル: ${fileName}\nパス: ${filePath}`;
-    this.selectedFileDiv.className = 'info-box success';
-  }
-
-  /**
-   * 認証状態に応じてUIを更新
    */
   updateAuthUI(isAuthenticated) {
     if (isAuthenticated) {

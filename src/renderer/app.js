@@ -48,21 +48,6 @@ function registerEventListeners() {
     elements.switchTab('settings');
   });
 
-  // 設定ファイルを使用
-  elements.useConfiguredFileBtn.addEventListener('click', () => {
-    if (state.configuredTsvPath) {
-      state.setSelectedFile(state.configuredTsvPath);
-      elements.showSelectedFile(state.configuredTsvPath);
-      elements.updateStatus('設定されたTSVファイルを使用します', 'success');
-    } else {
-      elements.updateStatus('TSVファイルパスが設定されていません', 'error');
-    }
-  });
-
-  // ファイル選択（手動）
-  elements.selectFileBtn.addEventListener('click', () => {
-    handleFileSelect(elements, state);
-  });
 
   // Google Drive認証
   elements.authenticateBtn.addEventListener('click', () => {

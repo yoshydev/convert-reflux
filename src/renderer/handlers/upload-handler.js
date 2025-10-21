@@ -6,8 +6,11 @@
  * Google Driveアップロードハンドラー
  */
 export async function handleUpload(elements, state) {
-  if (!state.selectedFilePath) {
-    elements.updateStatus('先にTSVファイルを選択してください', 'warning');
+  // 設定されたTSVファイルパスを使用
+  const tsvPath = state.configuredTsvPath;
+
+  if (!tsvPath) {
+    elements.updateStatus('先にTSVファイルパスを設定してください', 'warning');
     return;
   }
 
@@ -21,7 +24,7 @@ export async function handleUpload(elements, state) {
 
     // 変換処理を実行（ファイル名は「inf_score.csv」固定）
     elements.updateStatus('TSVをCSVに変換中...', 'info');
-    const convertResult = await window.electronAPI.convertTsvToCsv(state.selectedFilePath, 'inf_score.csv');
+    const convertResult = await window.electronAPI.convertTsvToCsv(tsvPath, 'inf_score.csv');
 
     if (!convertResult.success) {
       elements.updateStatus(`変換エラー: ${convertResult.error}`, 'error');
