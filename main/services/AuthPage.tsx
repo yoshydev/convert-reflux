@@ -5,33 +5,33 @@ interface AuthPageProps {
 }
 
 const AuthPage: React.FC<AuthPageProps> = ({ type }) => {
-    const contents = {
-        success: {
-            icon: '✓',
-            iconClass: 'success',
-            title: '認証が完了しました！',
-            message: 'Google Driveへの接続に成功しました。',
-            instruction: 'このウィンドウを閉じて、アプリに戻ってファイルのアップロードを開始できます。'
-        },
-        error: {
-            icon: '✕',
-            iconClass: 'error',
-            title: '認証に失敗しました',
-            message: '認証処理中にエラーが発生しました。',
-            instruction: 'このウィンドウを閉じて、アプリから再度認証をお試しください。問題が解決しない場合は、設定をご確認ください。'
-        },
-        cancelled: {
-            icon: '!',
-            iconClass: 'cancelled',
-            title: '認証がキャンセルされました',
-            message: '認証プロセスが中断されました。',
-            instruction: 'このウィンドウを閉じて、もう一度認証を行う場合はアプリから操作してください。'
-        }
-    };
+  const contents = {
+    success: {
+      icon: '✓',
+      iconClass: 'success',
+      title: '認証が完了しました！',
+      message: 'Google Driveへの接続に成功しました。',
+      instruction: 'このウィンドウを閉じて、アプリに戻ってファイルのアップロードを開始できます。'
+    },
+    error: {
+      icon: '✕',
+      iconClass: 'error',
+      title: '認証に失敗しました',
+      message: '認証処理中にエラーが発生しました。',
+      instruction: 'このウィンドウを閉じて、アプリから再度認証をお試しください。問題が解決しない場合は、設定をご確認ください。'
+    },
+    cancelled: {
+      icon: '!',
+      iconClass: 'cancelled',
+      title: '認証がキャンセルされました',
+      message: '認証プロセスが中断されました。',
+      instruction: 'このウィンドウを閉じて、もう一度認証を行う場合はアプリから操作してください。'
+    }
+  };
 
-    const content = contents[type] || contents.error;
+  const content = contents[type] || contents.error;
 
-    const styles = `
+  const styles = `
     * {
       margin: 0;
       padding: 0;
@@ -156,7 +156,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ type }) => {
     }
   `;
 
-    const script = `
+  const script = `
     // ウィンドウを閉じる処理
     function closeWindow() {
       // 複数の方法を試す
@@ -194,27 +194,27 @@ const AuthPage: React.FC<AuthPageProps> = ({ type }) => {
     }, 1000);
   `;
 
-    return (
-        <html lang="ja">
-            <head>
-                <meta charSet="UTF-8" />
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>{content.title}</title>
-                <style dangerouslySetInnerHTML={{ __html: styles }} />
-            </head>
-            <body>
-                <div className="container">
-                    <div className={`icon ${content.iconClass}`}>{content.icon}</div>
-                    <h1>{content.title}</h1>
-                    <p>{content.message}</p>
-                    <div className="instruction">{content.instruction}</div>
-                    <button className="close-btn" id="closeBtn">ウィンドウを閉じる</button>
-                    <div className="auto-close-info">このウィンドウは5秒後に自動的に閉じます</div>
-                </div>
-                <script dangerouslySetInnerHTML={{ __html: script }} />
-            </body>
-        </html>
-    );
+  return (
+    <html lang="ja">
+      <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{content.title}</title>
+        <style dangerouslySetInnerHTML={{ __html: styles }} />
+      </head>
+      <body>
+        <div className="container">
+          <div className={`icon ${content.iconClass}`}>{content.icon}</div>
+          <h1>{content.title}</h1>
+          <p>{content.message}</p>
+          <div className="instruction">{content.instruction}</div>
+          <button className="close-btn" id="closeBtn">ウィンドウを閉じる</button>
+          <div className="auto-close-info">このウィンドウは5秒後に自動的に閉じます</div>
+        </div>
+        <script dangerouslySetInnerHTML={{ __html: script }} />
+      </body>
+    </html>
+  );
 };
 
 export default AuthPage;

@@ -216,9 +216,9 @@ export default function HomePage() {
             <button
               onClick={() => setActiveTab('settings')}
               className={`flex-1 py-3 px-4 font-medium transition-colors ${activeTab === 'settings'
-                  ? 'bg-indigo-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-100'
-                }`}
+                ? 'bg-indigo-600 text-white'
+                : 'bg-white text-gray-700 hover:bg-gray-100'
+              }`}
             >
               ⚙️ 設定
             </button>
@@ -226,11 +226,11 @@ export default function HomePage() {
               onClick={() => isSetupComplete && setActiveTab('upload')}
               disabled={!isSetupComplete}
               className={`flex-1 py-3 px-4 font-medium transition-colors ${activeTab === 'upload'
-                  ? 'bg-indigo-600 text-white'
-                  : isSetupComplete
-                    ? 'bg-white text-gray-700 hover:bg-gray-100'
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                }`}
+                ? 'bg-indigo-600 text-white'
+                : isSetupComplete
+                  ? 'bg-white text-gray-700 hover:bg-gray-100'
+                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              }`}
             >
               ☁️ アップロード
             </button>
@@ -255,9 +255,9 @@ export default function HomePage() {
                   </div>
                   <div
                     className={`p-3 rounded ${isSetupComplete
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-yellow-100 text-yellow-800'
-                      }`}
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-yellow-100 text-yellow-800'
+                    }`}
                   >
                     {isSetupComplete
                       ? '✓ セットアップ完了！アップロードタブに移動できます'
@@ -317,13 +317,13 @@ export default function HomePage() {
                   {authStatus.message && (
                     <div
                       className={`p-3 rounded ${authStatus.type === 'success'
-                          ? 'bg-green-100 text-green-800'
-                          : authStatus.type === 'error'
-                            ? 'bg-red-100 text-red-800'
-                            : authStatus.type === 'warning'
-                              ? 'bg-yellow-100 text-yellow-800'
-                              : 'bg-blue-100 text-blue-800'
-                        }`}
+                        ? 'bg-green-100 text-green-800'
+                        : authStatus.type === 'error'
+                          ? 'bg-red-100 text-red-800'
+                          : authStatus.type === 'warning'
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : 'bg-blue-100 text-blue-800'
+                      }`}
                     >
                       {authStatus.message}
                     </div>
@@ -376,13 +376,13 @@ export default function HomePage() {
                   <h2 className="text-2xl font-bold text-gray-800 mb-4">ステータス</h2>
                   <div
                     className={`p-4 rounded whitespace-pre-wrap ${status.type === 'success'
-                        ? 'bg-green-100 text-green-800'
-                        : status.type === 'error'
-                          ? 'bg-red-100 text-red-800'
-                          : status.type === 'warning'
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-blue-100 text-blue-800'
-                      }`}
+                      ? 'bg-green-100 text-green-800'
+                      : status.type === 'error'
+                        ? 'bg-red-100 text-red-800'
+                        : status.type === 'warning'
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : 'bg-blue-100 text-blue-800'
+                    }`}
                   >
                     {status.message}
                   </div>

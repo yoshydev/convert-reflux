@@ -7,7 +7,7 @@ import AuthPage from './AuthPage';
  * AuthPageコンポーネントをHTMLに変換
  */
 export function renderAuthPageToHTML(type: 'success' | 'error' | 'cancelled'): string {
-    return '<!DOCTYPE html>' + renderToStaticMarkup(<AuthPage type={type} />);
+  return '<!DOCTYPE html>' + renderToStaticMarkup(<AuthPage type={type} />);
 }
 
 /**
@@ -16,5 +16,5 @@ export function renderAuthPageToHTML(type: 'success' | 'error' | 'cancelled'): s
  * @returns HTML文字列
  */
 export function getAuthPageHTML(type: 'success' | 'error' | 'cancelled'): string {
-    return renderAuthPageToHTML(type);
+  return renderAuthPageToHTML(type);
 }
