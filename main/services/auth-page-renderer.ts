@@ -20,7 +20,8 @@ export function getAuthPageHTML(type: 'success' | 'error' | 'cancelled'): string
 
     // ビルド時は resources/services にファイルがある
     if (app.isPackaged) {
-      templatePath = path.join(process.resourcesPath!, 'services', 'auth-page-modern.html');
+      const resourcesPath = process.resourcesPath || '';
+      templatePath = path.join(resourcesPath, 'services', 'auth-page-modern.html');
     } else {
       // 開発時は main/services にファイルがある（コンパイル後は app ディレクトリから見て ../main/services）
       const projectRoot = path.resolve(__dirname, '..');
@@ -34,7 +35,8 @@ export function getAuthPageHTML(type: 'success' | 'error' | 'cancelled'): string
     if (!fs.existsSync(templatePath)) {
       console.log('Modern template not found, trying fallback');
       if (app.isPackaged) {
-        templatePath = path.join(process.resourcesPath!, 'services', 'auth-page.html');
+        const resourcesPath = process.resourcesPath || '';
+        templatePath = path.join(resourcesPath, 'services', 'auth-page.html');
       } else {
         const projectRoot = path.resolve(__dirname, '..');
         templatePath = path.join(projectRoot, 'main', 'services', 'auth-page.html');

@@ -1,14 +1,15 @@
 import fs from 'fs';
 import path from 'path';
 
-import { google } from 'googleapis';
+import { OAuth2Client } from 'google-auth-library';
+import { drive_v3, google } from 'googleapis';
 
 import * as config from '../utils/config';
 
 /**
  * アプリ専用フォルダを取得または作成
  */
-async function getOrCreateAppFolder(drive: any): Promise<string> {
+async function getOrCreateAppFolder(drive: drive_v3.Drive): Promise<string> {
   try {
     let folderId = config.getFolderId();
 
@@ -17,7 +18,7 @@ async function getOrCreateAppFolder(drive: any): Promise<string> {
         await drive.files.get({ fileId: folderId });
         console.log('既存のフォルダを使用:', folderId);
         return folderId;
-      } catch (error) {
+      } catch {
         console.log('保存されていたフォルダが見つかりません。新しく作成します。');
         folderId = undefined;
       }
@@ -39,11 +40,11 @@ async function getOrCreateAppFolder(drive: any): Promise<string> {
       };
 
       const folder = await drive.files.create({
-        resource: folderMetadata,
+        requestBody: folderMetadata,
         fields: 'id, name'
       });
 
-      folderId = folder.data.id;
+      folderId = folder.data.id || '';
       console.log('新しいフォルダを作成:', folderId);
     }
 
@@ -59,10 +60,15 @@ async function getOrCreateAppFolder(drive: any): Promise<string> {
  * Google Driveにファイルをアップロード
  */
 export async function uploadToDrive(
-  oauth2Client: any,
+  oauth2Client: OAuth2Client,
   filePath: string,
   fileName?: string
-): Promise<any> {
+): Promise<{
+  fileId: string;
+  action: string;
+  fileInfo: drive_v3.Schema$File;
+  folderInfo: drive_v3.Schema$File;
+}> {
   if (!oauth2Client) {
     throw new Error('Google Drive認証が完了していません');
   }
@@ -85,7 +91,7 @@ export async function uploadToDrive(
   let action: string;
 
   if (response.data.files && response.data.files.length > 0) {
-    fileId = response.data.files[0].id as string;
+    fileId = (response.data.files[0].id || '') as string;
     await drive.files.update({
       fileId,
       media: {
@@ -107,7 +113,7 @@ export async function uploadToDrive(
       fields: 'id, webViewLink'
     });
 
-    fileId = file.data.id as string;
+    fileId = (file.data.id || '') as string;
     action = 'created';
   }
 
@@ -124,8 +130,8 @@ export async function uploadToDrive(
   return {
     fileId,
     action,
-    fileInfo: fileInfo.data,
-    folderInfo: folderInfo.data
+    fileInfo: fileInfo.data as drive_v3.Schema$File,
+    folderInfo: folderInfo.data as drive_v3.Schema$File
   };
 }
 
