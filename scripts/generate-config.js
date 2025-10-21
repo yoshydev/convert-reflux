@@ -16,14 +16,14 @@ const path = require('path');
 function parseEnvValue(value) {
   // まず全体をトリミング
   let trimmed = value.trim();
-  
+
   // シングルクォートまたはダブルクォートで囲まれている場合は除去
   // クォート内の空白は保持される
   if ((trimmed.startsWith("'") && trimmed.endsWith("'")) ||
-      (trimmed.startsWith('"') && trimmed.endsWith('"'))) {
+    (trimmed.startsWith('"') && trimmed.endsWith('"'))) {
     trimmed = trimmed.slice(1, -1);
   }
-  
+
   return trimmed;
 }
 
@@ -38,16 +38,16 @@ if (fs.existsSync(envPath) && !process.env.GOOGLE_CLIENT_ID) {
     if (!trimmedLine || trimmedLine.startsWith('#')) {
       return;
     }
-    
+
     // KEY=VALUE形式を解析（=の最初の出現位置で分割）
     const separatorIndex = trimmedLine.indexOf('=');
     if (separatorIndex === -1) {
       return;
     }
-    
+
     const key = trimmedLine.slice(0, separatorIndex).trim();
     const value = trimmedLine.slice(separatorIndex + 1);
-    
+
     // キーが有効な環境変数名の形式かチェック
     if (/^[A-Z_][A-Z0-9_]*$/i.test(key) && !process.env[key]) {
       process.env[key] = parseEnvValue(value);
