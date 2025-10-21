@@ -24,26 +24,7 @@
       <!-- ステップ2: Google Drive設定 -->
       <section class="card">
         <h2>ステップ2: Google Drive 連携（オプション）</h2>
-        <div id="buildConfigStatus" class="info-box" style="display: none;"></div>
-        <div id="credentialsForm">
-          <div class="form-group">
-            <label for="clientId">Client ID:</label>
-            <input type="text" id="clientId" placeholder="Google Cloud ConsoleのClient ID" />
-          </div>
-          <div class="form-group">
-            <label for="clientSecret">Client Secret:</label>
-            <input type="password" id="clientSecret" placeholder="Google Cloud ConsoleのClient Secret" />
-          </div>
-          <div class="info-box">
-            <strong>📁 アップロード先:</strong> アプリが自動的に「Convert-Reflux」フォルダを作成します。
-          </div>
-          <div class="button-group">
-            <button id="saveCredentialsBtn" class="btn btn-secondary">💾 認証情報を保存</button>
-            <button id="authenticateBtn" class="btn btn-secondary">🔐 Google Drive 認証</button>
-            <button id="clearCredentialsBtn" class="btn btn-warning">🗑️ 認証情報をクリア</button>
-            <button id="resetFolderBtn" class="btn btn-warning">🔄 フォルダをリセット</button>
-          </div>
-        </div>
+        <button id="authenticateBtn" class="btn btn-secondary">🔐 Google Drive 認証</button>
         <div id="authStatus" class="info-box"></div>
       </section>
 

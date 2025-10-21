@@ -13,23 +13,10 @@ export async function initializeSettings(elements, state) {
 
     if (buildConfig.hasClientId && buildConfig.hasClientSecret) {
       // ビルド時に認証情報が埋め込まれている場合
-      elements.showBuildConfigStatus();
-      elements.disableCredentialsForm();
       elements.updateAuthStatus(
         '認証情報が設定されています。「Google Drive 認証」ボタンをクリックしてください。',
         'success'
       );
-    } else {
-      // ビルド時の認証情報がない場合、ストアから取得
-      const credentials = await window.electronAPI.getCredentials();
-
-      if (credentials.clientId) {
-        elements.clientId.value = credentials.clientId;
-        elements.updateAuthStatus('認証情報が保存されています（暗号化済み）', 'success');
-      }
-      if (credentials.clientSecret) {
-        elements.clientSecret.value = '********'; // マスク表示
-      }
     }
 
 

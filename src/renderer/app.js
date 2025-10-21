@@ -6,10 +6,7 @@ import elements from './dom.js';
 import { initializeSettings } from './settings.js';
 import { handleFileSelect } from './handlers/file-handler.js';
 import {
-  handleSaveCredentials,
   handleAuthenticate,
-  handleClearCredentials,
-  handleResetFolder,
   handleAuthSuccess
 } from './handlers/auth-handler.js';
 import { handleUpload } from './handlers/upload-handler.js';
@@ -23,26 +20,11 @@ function registerEventListeners() {
     handleFileSelect(elements, state);
   });
 
-
-  // 認証情報保存
-  elements.saveCredentialsBtn.addEventListener('click', () => {
-    handleSaveCredentials(elements);
-  });
-
   // Google Drive認証
   elements.authenticateBtn.addEventListener('click', () => {
     handleAuthenticate(elements, state);
   });
 
-  // 認証情報クリア
-  elements.clearCredentialsBtn.addEventListener('click', () => {
-    handleClearCredentials(elements, state);
-  });
-
-  // フォルダリセット
-  elements.resetFolderBtn.addEventListener('click', () => {
-    handleResetFolder(elements);
-  });
 
   // Google Driveアップロード
   elements.uploadBtn.addEventListener('click', () => {
