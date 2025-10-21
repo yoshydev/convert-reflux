@@ -1,5 +1,20 @@
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
+import {
+  Settings,
+  Upload,
+  FolderOpen,
+  Shield,
+  CheckCircle2,
+  AlertCircle,
+  FileText,
+  Cloud,
+  Loader2,
+  ExternalLink,
+  Lock,
+  Unlock
+} from 'lucide-react'
+import { Button, Card, StatusIndicator, Tabs, Progress } from '../components'
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState<'settings' | 'upload'>('settings')
@@ -209,130 +224,210 @@ export default function HomePage() {
       <Head>
         <title>Reflux Converter</title>
       </Head>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="container mx-auto px-4 py-8 max-w-4xl">
-          <header className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-800 mb-2">📊 Reflux Converter</h1>
-            <p className="text-gray-600">TSVファイルをCSVに変換してGoogle Driveにアップロード</p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+        <div className="container mx-auto px-4 py-8 max-w-6xl">
+          {/* ヘッダー */}
+          <header className="text-center mb-12 animate-fade-in">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-600 rounded-full mb-4 shadow-medium">
+              <FileText className="w-8 h-8 text-white" />
+            </div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-3 text-balance">
+              Reflux Converter
+            </h1>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto text-pretty">
+              TSVファイルをCSVに変換してGoogle Driveに自動アップロード
+            </p>
           </header>
 
-          {/* タブナビゲーション */}
-          <nav className="flex mb-6 bg-white rounded-lg shadow-md overflow-hidden">
-            <button
-              onClick={() => setActiveTab('settings')}
-              className={`flex-1 py-3 px-4 font-medium transition-colors ${activeTab === 'settings'
-                ? 'bg-indigo-600 text-white'
-                : 'bg-white text-gray-700 hover:bg-gray-100'
-                }`}
-            >
-              ⚙️ 設定
-            </button>
-            <button
-              onClick={() => isSetupComplete && setActiveTab('upload')}
-              disabled={!isSetupComplete}
-              className={`flex-1 py-3 px-4 font-medium transition-colors ${activeTab === 'upload'
-                ? 'bg-indigo-600 text-white'
-                : isSetupComplete
-                  ? 'bg-white text-gray-700 hover:bg-gray-100'
-                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                }`}
-            >
-              ☁️ アップロード
-            </button>
-          </nav>
+          {/* セットアップ状況概要 */}
+          <div className="mb-8 animate-slide-up">
+            <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-2">
+                    {tsvPath ? (
+                      <CheckCircle2 className="w-5 h-5 text-success-600" />
+                    ) : (
+                      <AlertCircle className="w-5 h-5 text-gray-400" />
+                    )}
+                    <span className={`text-sm font-medium ${tsvPath ? 'text-success-700' : 'text-gray-500'}`}>
+                      TSVファイル設定
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    {isAuthenticated ? (
+                      <CheckCircle2 className="w-5 h-5 text-success-600" />
+                    ) : (
+                      <AlertCircle className="w-5 h-5 text-gray-400" />
+                    )}
+                    <span className={`text-sm font-medium ${isAuthenticated ? 'text-success-700' : 'text-gray-500'}`}>
+                      Google Drive認証
+                    </span>
+                  </div>
+                </div>
+                {isSetupComplete && (
+                  <div className="flex items-center space-x-2 text-success-700">
+                    <CheckCircle2 className="w-5 h-5" />
+                    <span className="text-sm font-semibold">準備完了</span>
+                  </div>
+                )}
+              </div>
+            </Card>
+          </div>
 
-          <main>
+          {/* タブナビゲーション */}
+          <div className="mb-8 animate-slide-down">
+            <Tabs
+              tabs={[
+                {
+                  id: 'settings',
+                  label: '設定',
+                  icon: <Settings className="w-4 h-4" />
+                },
+                {
+                  id: 'upload',
+                  label: 'アップロード',
+                  icon: <Upload className="w-4 h-4" />
+                }
+              ]}
+              activeTab={activeTab}
+              onTabChange={(tab) => {
+                if (tab === 'upload' && !isSetupComplete) return
+                setActiveTab(tab as 'settings' | 'upload')
+              }}
+              className="bg-white rounded-xl shadow-soft p-1"
+            />
+          </div>
+
+          <main className="animate-scale-in">
             {/* 設定画面 */}
             {activeTab === 'settings' && (
-              <div className="space-y-6">
-                {/* セットアップ状況 */}
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <h2 className="text-2xl font-bold text-gray-800 mb-4">📋 セットアップ状況</h2>
-                  <div className="space-y-2 mb-4">
-                    <div className={`flex items-center ${tsvPath ? 'text-green-600' : 'text-gray-400'}`}>
-                      <span className="mr-2">{tsvPath ? '✓' : '○'}</span>
-                      <span>TSVファイルのパス設定</span>
-                    </div>
-                    <div className={`flex items-center ${isAuthenticated ? 'text-green-600' : 'text-gray-400'}`}>
-                      <span className="mr-2">{isAuthenticated ? '✓' : '○'}</span>
-                      <span>Google Drive 認証</span>
-                    </div>
-                  </div>
-                  <div
-                    className={`p-3 rounded ${isSetupComplete
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-yellow-100 text-yellow-800'
-                      }`}
-                  >
-                    {isSetupComplete
-                      ? '✓ セットアップ完了！アップロードタブに移動できます'
-                      : '設定を完了してアップロード機能を有効にしてください'}
-                  </div>
-                </div>
-
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* TSVファイルパス設定 */}
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <h2 className="text-2xl font-bold text-gray-800 mb-2">📁 TSVファイルパス設定</h2>
-                  <p className="text-gray-600 mb-4">定期的にアップロードするTSVファイルのパスを設定してください</p>
-                  <div className="flex gap-2 mb-2">
-                    <input
-                      type="text"
-                      value={tsvPath}
-                      placeholder="例: C:\Users\user\Documents\Reflux.x.xx.xx\tracker.tsv"
-                      readOnly
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
-                    />
-                    <button
-                      onClick={handleBrowseTsv}
-                      className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
-                    >
-                      📂 参照
-                    </button>
-                  </div>
-                  <small className="text-gray-500">設定したファイルは自動的に読み込まれます</small>
-                  {tsvPath && (
-                    <div className="mt-2 p-3 bg-green-100 text-green-800 rounded">
-                      設定完了: {tsvPath.split(/[\\/]/).pop()}
+                <Card
+                  title="TSVファイルパス設定"
+                  subtitle="定期的にアップロードするTSVファイルを選択"
+                  className="card-hover"
+                  shadow="medium"
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <FolderOpen className="w-5 h-5 text-gray-600 flex-shrink-0" />
+                      <input
+                        type="text"
+                        value={tsvPath}
+                        placeholder="TSVファイルを選択してください"
+                        readOnly
+                        className="flex-1 bg-transparent border-none outline-none text-sm text-gray-700"
+                      />
                     </div>
-                  )}
-                </div>
 
-                {/* Google Drive認証設定 */}
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <h2 className="text-2xl font-bold text-gray-800 mb-2">🔐 Google Drive 認証</h2>
-                  <p className="text-gray-600 mb-4">Google Driveへのアップロードには認証が必要です</p>
-                  <div className="flex gap-2 mb-4">
-                    {!isAuthenticated ? (
-                      <button
-                        onClick={handleAuthenticate}
-                        disabled={isAuthenticating}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400"
-                      >
-                        🔐 Google Drive 認証
-                      </button>
-                    ) : (
-                      <button
-                        onClick={handleDisconnect}
-                        className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
-                      >
-                        🔓 連携解除
-                      </button>
+                    <Button
+                      onClick={handleBrowseTsv}
+                      variant="secondary"
+                      icon={FolderOpen}
+                      className="w-full"
+                    >
+                      ファイルを選択
+                    </Button>
+
+                    {tsvPath && (
+                      <StatusIndicator
+                        type="success"
+                        message={`設定完了: ${tsvPath.split(/[\\/]/).pop()}`}
+                        size="sm"
+                      />
                     )}
                   </div>
-                  {authStatus.message && (
-                    <div
-                      className={`p-3 rounded ${authStatus.type === 'success'
-                        ? 'bg-green-100 text-green-800'
-                        : authStatus.type === 'error'
-                          ? 'bg-red-100 text-red-800'
-                          : authStatus.type === 'warning'
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-blue-100 text-blue-800'
-                        }`}
-                    >
-                      {authStatus.message}
+                </Card>
+
+                {/* Google Drive認証設定 */}
+                <Card
+                  title="Google Drive認証"
+                  subtitle="ファイルアップロードに必要な認証を設定"
+                  className="card-hover"
+                  shadow="medium"
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <Shield className="w-5 h-5 text-gray-600 flex-shrink-0" />
+                      <span className="text-sm text-gray-700">
+                        {isAuthenticated ? '認証済み' : '未認証'}
+                      </span>
+                      <div className="flex-1"></div>
+                      {isAuthenticated ? (
+                        <CheckCircle2 className="w-5 h-5 text-success-600" />
+                      ) : (
+                        <AlertCircle className="w-5 h-5 text-warning-600" />
+                      )}
                     </div>
-                  )}
+
+                    {!isAuthenticated ? (
+                      <Button
+                        onClick={handleAuthenticate}
+                        loading={isAuthenticating}
+                        variant="primary"
+                        icon={Lock}
+                        className="w-full"
+                      >
+                        Google Drive認証
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={handleDisconnect}
+                        variant="error"
+                        icon={Unlock}
+                        className="w-full"
+                      >
+                        認証を解除
+                      </Button>
+                    )}
+
+                    {authStatus.message && (
+                      <StatusIndicator
+                        type={authStatus.type as any}
+                        message={authStatus.message}
+                        size="sm"
+                      />
+                    )}
+                  </div>
+                </Card>
+
+                {/* セットアップガイド */}
+                <div className="lg:col-span-2">
+                  <Card
+                    title="セットアップガイド"
+                    className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200"
+                  >
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="flex flex-col items-center text-center p-4">
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-3 ${tsvPath ? 'bg-success-100 text-success-600' : 'bg-gray-100 text-gray-400'
+                          }`}>
+                          <span className="font-bold">1</span>
+                        </div>
+                        <h3 className="font-medium text-gray-900 mb-1">ファイル選択</h3>
+                        <p className="text-sm text-gray-600">TSVファイルのパスを設定</p>
+                      </div>
+
+                      <div className="flex flex-col items-center text-center p-4">
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-3 ${isAuthenticated ? 'bg-success-100 text-success-600' : 'bg-gray-100 text-gray-400'
+                          }`}>
+                          <span className="font-bold">2</span>
+                        </div>
+                        <h3 className="font-medium text-gray-900 mb-1">認証設定</h3>
+                        <p className="text-sm text-gray-600">Google Drive認証を完了</p>
+                      </div>
+
+                      <div className="flex flex-col items-center text-center p-4">
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-3 ${isSetupComplete ? 'bg-success-100 text-success-600' : 'bg-gray-100 text-gray-400'
+                          }`}>
+                          <span className="font-bold">3</span>
+                        </div>
+                        <h3 className="font-medium text-gray-900 mb-1">アップロード</h3>
+                        <p className="text-sm text-gray-600">ファイルを変換・アップロード</p>
+                      </div>
+                    </div>
+                  </Card>
                 </div>
               </div>
             )}
@@ -340,64 +435,113 @@ export default function HomePage() {
             {/* アップロード画面 */}
             {activeTab === 'upload' && (
               <div className="space-y-6">
-                {/* 現在の設定 */}
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <h2 className="text-2xl font-bold text-gray-800 mb-4">📝 現在の設定</h2>
-                  <div className="space-y-2 mb-4">
-                    <div>
-                      <strong>TSVファイル: </strong>
-                      <span className="text-green-600">{tsvPath.split(/[\\/]/).pop()}</span>
+                {/* 現在の設定確認 */}
+                <Card
+                  title="現在の設定"
+                  subtitle="アップロード前に設定内容をご確認ください"
+                  className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="flex items-center space-x-3 p-3 bg-white rounded-lg shadow-sm">
+                      <FileText className="w-5 h-5 text-green-600" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">TSVファイル</p>
+                        <p className="text-sm text-gray-600">{tsvPath.split(/[\\/]/).pop()}</p>
+                      </div>
                     </div>
-                    <div>
-                      <strong>Google Drive: </strong>
-                      <span className="text-green-600">認証済み ✓</span>
+
+                    <div className="flex items-center space-x-3 p-3 bg-white rounded-lg shadow-sm">
+                      <Cloud className="w-5 h-5 text-green-600" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">Google Drive</p>
+                        <p className="text-sm text-gray-600">認証済み</p>
+                      </div>
                     </div>
                   </div>
-                  <button
-                    onClick={() => setActiveTab('settings')}
-                    className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
-                  >
-                    ⚙️ 設定を編集
-                  </button>
-                </div>
+
+                  <div className="mt-4 pt-4 border-t border-green-200">
+                    <Button
+                      onClick={() => setActiveTab('settings')}
+                      variant="ghost"
+                      icon={Settings}
+                      size="sm"
+                    >
+                      設定を編集
+                    </Button>
+                  </div>
+                </Card>
 
                 {/* アップロード実行 */}
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <h2 className="text-2xl font-bold text-gray-800 mb-2">☁️ Google Driveにアップロード</h2>
-                  <p className="text-gray-600 mb-4">
-                    設定されたTSVファイルを「inf_score.csv」に変換してアップロードします
-                  </p>
-                  <button
-                    onClick={handleUpload}
-                    disabled={!isSetupComplete || isUploading}
-                    className="w-full py-3 bg-green-600 text-white text-lg font-bold rounded-md hover:bg-green-700 transition-colors disabled:bg-gray-400"
-                  >
-                    ☁️ Google Driveにアップロード
-                  </button>
-                </div>
+                <Card
+                  title="ファイルアップロード"
+                  subtitle="TSVファイルをCSVに変換してGoogle Driveにアップロードします"
+                  shadow="medium"
+                  className="card-hover"
+                >
+                  <div className="space-y-4">
+                    <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                      <div className="flex items-start space-x-3">
+                        <ExternalLink className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium text-blue-900 mb-1">処理内容</h4>
+                          <ul className="text-sm text-blue-700 space-y-1">
+                            <li>• TSVファイルを「inf_score.csv」形式に変換</li>
+                            <li>• Google Drive の指定フォルダにアップロード</li>
+                            <li>• 既存ファイルがある場合は自動更新</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Button
+                      onClick={handleUpload}
+                      disabled={!isSetupComplete || isUploading}
+                      loading={isUploading}
+                      variant="success"
+                      icon={Upload}
+                      size="lg"
+                      className="w-full"
+                    >
+                      Google Driveにアップロード
+                    </Button>
+                  </div>
+                </Card>
 
                 {/* ステータス表示 */}
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <h2 className="text-2xl font-bold text-gray-800 mb-4">ステータス</h2>
-                  <div
-                    className={`p-4 rounded whitespace-pre-wrap ${status.type === 'success'
-                      ? 'bg-green-100 text-green-800'
-                      : status.type === 'error'
-                        ? 'bg-red-100 text-red-800'
-                        : status.type === 'warning'
-                          ? 'bg-yellow-100 text-yellow-800'
-                          : 'bg-blue-100 text-blue-800'
-                      }`}
+                {status.message && (
+                  <Card
+                    title="実行ステータス"
+                    shadow="medium"
                   >
-                    {status.message}
-                  </div>
-                </div>
+                    <StatusIndicator
+                      type={status.type as any}
+                      message={status.message}
+                      size="md"
+                    />
+
+                    {isUploading && (
+                      <div className="mt-4">
+                        <Progress
+                          value={50}
+                          color="primary"
+                          showPercentage={false}
+                          className="mb-2"
+                        />
+                        <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <span>処理中...</span>
+                        </div>
+                      </div>
+                    )}
+                  </Card>
+                )}
               </div>
             )}
           </main>
 
-          <footer className="text-center mt-8 text-gray-600">
-            <p>設定はelectron-storeで安全に保存されます</p>
+          {/* フッター */}
+          <footer className="text-center mt-12 text-gray-500 text-sm animate-fade-in">
+            <p>設定は electron-store で安全に保存されます</p>
           </footer>
         </div>
       </div>

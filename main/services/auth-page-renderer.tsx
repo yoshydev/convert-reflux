@@ -8,7 +8,7 @@ import path from 'path';
  */
 export function getAuthPageHTML(type: 'success' | 'error' | 'cancelled'): string {
   try {
-    const templatePath = path.join(__dirname, 'auth-page.html');
+    const templatePath = path.join(__dirname, 'auth-page-modern.html');
     let template = fs.readFileSync(templatePath, 'utf-8');
 
     let title: string;
@@ -19,24 +19,24 @@ export function getAuthPageHTML(type: 'success' | 'error' | 'cancelled'): string
 
     switch (type) {
       case 'success':
-        title = '認証成功';
-        message = 'Google Drive認証が正常に完了しました。';
-        instruction = 'アプリケーションに戻って作業を続けてください。';
+        title = '認証が完了しました！';
+        message = 'Google Driveへの接続に成功しました。';
+        instruction = 'このウィンドウを閉じて、アプリに戻ってファイルのアップロードを開始できます。';
         icon = '✓';
         iconClass = 'success';
         break;
       case 'error':
-        title = '認証エラー';
-        message = '認証プロセス中にエラーが発生しました。';
-        instruction = 'アプリケーションに戻って再度お試しください。';
-        icon = '✗';
+        title = '認証に失敗しました';
+        message = '認証処理中にエラーが発生しました。';
+        instruction = 'このウィンドウを閉じて、アプリから再度認証をお試しください。問題が解決しない場合は、設定をご確認ください。';
+        icon = '✕';
         iconClass = 'error';
         break;
       case 'cancelled':
-        title = '認証キャンセル';
-        message = '認証がユーザーによってキャンセルされました。';
-        instruction = 'アプリケーションに戻って必要に応じて再度お試しください。';
-        icon = '⚠';
+        title = '認証がキャンセルされました';
+        message = '認証プロセスが中断されました。';
+        instruction = 'このウィンドウを閉じて、もう一度認証を行う場合はアプリから操作してください。';
+        icon = '!';
         iconClass = 'cancelled';
         break;
       default:
