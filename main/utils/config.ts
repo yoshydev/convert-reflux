@@ -1,20 +1,16 @@
-import { config } from 'dotenv';
 import Store from 'electron-store';
 
-// 環境変数を読み込み
-config();
+import { BUILD_CONFIG } from '../build-config';
 
-// 環境変数から直接取得
-const CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
-const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
+// ビルド時に生成された設定から認証情報を取得
+const CLIENT_ID = BUILD_CONFIG.GOOGLE_CLIENT_ID;
+const CLIENT_SECRET = BUILD_CONFIG.GOOGLE_CLIENT_SECRET;
 
 if (CLIENT_ID && CLIENT_SECRET) {
-  console.log('✅ 環境変数から認証情報を読み込みました');
+  console.log('✅ 認証情報を読み込みました');
 } else {
-  console.warn('⚠️  環境変数 GOOGLE_CLIENT_ID と GOOGLE_CLIENT_SECRET が設定されていません');
-  console.warn('   .env ファイルを作成し、以下の内容を設定してください:');
-  console.warn('   GOOGLE_CLIENT_ID=your_client_id');
-  console.warn('   GOOGLE_CLIENT_SECRET=your_client_secret');
+  console.warn('⚠️  認証情報が設定されていません');
+  console.warn('   環境変数 GOOGLE_CLIENT_ID と GOOGLE_CLIENT_SECRET を設定してビルドしてください');
 }
 
 // アプリ専用のフォルダ名
@@ -30,22 +26,21 @@ const store = new Store({
  * クライアントIDを取得
  */
 export function getClientId(): string {
-  return CLIENT_ID || (store.get('google.clientId') as string) || '';
+  return CLIENT_ID;
 }
 
 /**
  * クライアントシークレットを取得
  */
 export function getClientSecret(): string {
-  return CLIENT_SECRET || (store.get('google.clientSecret') as string) || '';
+  return CLIENT_SECRET;
 }
 
 /**
- * 認証情報を保存
+ * 認証情報を保存（非推奨: ビルド時埋め込みを使用）
  */
-export function saveCredentials(clientId?: string, clientSecret?: string): void {
-  if (!CLIENT_ID && clientId) store.set('google.clientId', clientId);
-  if (!CLIENT_SECRET && clientSecret) store.set('google.clientSecret', clientSecret);
+export function saveCredentials(_clientId?: string, _clientSecret?: string): void {
+  // ビルド時に埋め込まれた値を使用するため、何もしない
 }
 
 /**
@@ -62,8 +57,7 @@ export function getCredentials(): { clientId: string; clientSecret: string } {
  * 認証情報をクリア
  */
 export function clearCredentials(): void {
-  store.delete('google.clientId');
-  store.delete('google.clientSecret');
+  // クライアントIDとシークレットはビルド時埋め込みなので削除不要
   store.delete('google.folderId');
   store.delete('google.tokens');
   // TSVパスはクリアしない - ユーザーが設定したパス情報は保持

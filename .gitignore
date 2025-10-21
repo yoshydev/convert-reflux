@@ -6,6 +6,9 @@ node_modules
 .env.local
 .env.production
 
+# ビルド時に生成される設定ファイル（機密情報）
+main/build-config.ts
+
 # logs
 *.log
 

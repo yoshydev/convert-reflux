@@ -11,8 +11,8 @@
     "url": "https://github.com/yoshydev/convert-reflux.git"
   },
   "scripts": {
-    "dev": "nextron",
-    "build": "nextron build",
+    "dev": "node scripts/generate-config.js && nextron",
+    "build": "node scripts/generate-config.js && nextron build",
     "postinstall": "electron-builder install-app-deps",
     "lint": "eslint main renderer --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint main renderer --ext .ts,.tsx,.js,.jsx --fix",
