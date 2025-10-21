@@ -16,4 +16,18 @@ extraResources:
     filter:
       - auth-page.html
       - auth-page-modern.html
-publish: null
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  artifactName: ${productName}-${version}-Setup.${ext}
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+publish:
+  provider: github
+  owner: yoshydev
+  repo: convert-reflux
