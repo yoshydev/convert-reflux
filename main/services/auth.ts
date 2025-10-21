@@ -149,9 +149,6 @@ export async function initGoogleAuth(
       throw new Error('Client IDとClient Secretが設定されていません');
     }
 
-    // 認証情報を保存
-    config.saveCredentials(credentials.clientId, credentials.clientSecret);
-
     // OAuth2クライアントを作成
     const client = createOAuth2Client(clientId, clientSecret, redirectUri);
 

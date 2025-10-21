@@ -37,13 +37,6 @@ export function getClientSecret(): string {
 }
 
 /**
- * 認証情報を保存（非推奨: ビルド時埋め込みを使用）
- */
-export function saveCredentials(_clientId?: string, _clientSecret?: string): void {
-  // ビルド時に埋め込まれた値を使用するため、何もしない
-}
-
-/**
  * 認証情報を取得
  */
 export function getCredentials(): { clientId: string; clientSecret: string } {
