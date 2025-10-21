@@ -1,9 +1,9 @@
 const js = require('@eslint/js');
 const typescript = require('@typescript-eslint/eslint-plugin');
 const typescriptParser = require('@typescript-eslint/parser');
-const importPlugin = require('eslint-plugin-import');
 const react = require('eslint-plugin-react');
 const reactHooks = require('eslint-plugin-react-hooks');
+const importPlugin = require('eslint-plugin-import');
 
 module.exports = [
   {
@@ -17,6 +17,7 @@ module.exports = [
       'scripts/**',
       'build-config.js',
       'main/build-config.ts',
+      'eslint.config.js',
       'next-env.d.ts',
       'electron-builder.yml',
       'renderer/.next/**',
