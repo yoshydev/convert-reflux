@@ -1,7 +1,8 @@
-import React from 'react'
 import { FolderOpen } from 'lucide-react'
-import Card from '../Card'
+import React from 'react'
+
 import Button from '../Button'
+import Card from '../Card'
 import StatusIndicator from '../StatusIndicator'
 
 interface TsvFileSettingsProps {

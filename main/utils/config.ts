@@ -1,5 +1,5 @@
-import Store from 'electron-store';
 import { config } from 'dotenv';
+import Store from 'electron-store';
 
 // 環境変数を読み込み
 config();

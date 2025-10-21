@@ -1,7 +1,8 @@
-import React from 'react'
 import { Shield, CheckCircle2, AlertCircle, Lock, Unlock } from 'lucide-react'
-import Card from '../Card'
+import React from 'react'
+
 import Button from '../Button'
+import Card from '../Card'
 import StatusIndicator from '../StatusIndicator'
 
 interface GoogleDriveAuthProps {

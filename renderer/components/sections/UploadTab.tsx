@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   Settings,
   FileText,
@@ -7,10 +6,12 @@ import {
   ExternalLink,
   Loader2
 } from 'lucide-react'
-import Card from '../Card'
+import React from 'react'
+
 import Button from '../Button'
-import StatusIndicator from '../StatusIndicator'
+import Card from '../Card'
 import Progress from '../Progress'
+import StatusIndicator from '../StatusIndicator'
 
 interface UploadTabProps {
   tsvPath: string

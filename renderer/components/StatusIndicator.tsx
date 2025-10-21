@@ -1,5 +1,5 @@
-import React from 'react'
 import { CheckCircle, XCircle, AlertCircle, Info, Loader } from 'lucide-react'
+import React from 'react'
 
 interface StatusIndicatorProps {
   type: 'success' | 'error' | 'warning' | 'info' | 'loading'

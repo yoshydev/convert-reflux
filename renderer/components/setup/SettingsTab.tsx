@@ -1,7 +1,8 @@
 import React from 'react'
-import { TsvFileSettings } from './TsvFileSettings'
+
 import { GoogleDriveAuth } from './GoogleDriveAuth'
 import { SetupGuide } from './SetupGuide'
+import { TsvFileSettings } from './TsvFileSettings'
 
 interface SettingsTabProps {
   tsvPath: string

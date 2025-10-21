@@ -118,7 +118,7 @@ function extractModeData(row: TsvRow, mode: Mode, columnMap: Map<string, number>
   return {
     LV: rating ? `☆${rating}` : '',
     Title: title,
-    mode: mode,
+    mode,
     Lamp: LAMP_MAPPING[lamp] || lamp,
     Score: exScore.toString(),
     rate: calculateRate(exScore, noteCount),

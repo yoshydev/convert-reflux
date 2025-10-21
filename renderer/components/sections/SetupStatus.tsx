@@ -1,5 +1,6 @@
-import React from 'react'
 import { CheckCircle2, AlertCircle } from 'lucide-react'
+import React from 'react'
+
 import Card from '../Card'
 
 interface SetupStatusProps {

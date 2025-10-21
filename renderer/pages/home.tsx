@@ -1,10 +1,11 @@
+import { Settings, Upload } from 'lucide-react'
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
-import { Settings, Upload } from 'lucide-react'
+
 import { Tabs } from '../components'
-import { useAuth, useTsvFile, useUpload } from '../hooks'
 import { Header, SetupStatus, UploadTab, Footer } from '../components/sections'
 import { SettingsTab } from '../components/setup'
+import { useAuth, useTsvFile, useUpload } from '../hooks'
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState<'settings' | 'upload'>('settings')
