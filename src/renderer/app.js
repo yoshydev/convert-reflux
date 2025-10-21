@@ -3,11 +3,12 @@
  */
 import state from './state.js';
 import elements from './dom.js';
-import { initializeSettings } from './settings.js';
+import { initializeSettings, updateSetupStatus } from './settings.js';
 import { handleFileSelect } from './handlers/file-handler.js';
 import {
   handleAuthenticate,
-  handleAuthSuccess
+  handleAuthSuccess,
+  handleDisconnect
 } from './handlers/auth-handler.js';
 import { handleUpload } from './handlers/upload-handler.js';
 
@@ -15,7 +16,50 @@ import { handleUpload } from './handlers/upload-handler.js';
  * イベントリスナーを登録
  */
 function registerEventListeners() {
-  // ファイル選択
+  // タブ切り替え
+  elements.settingsTab.addEventListener('click', () => {
+    elements.switchTab('settings');
+  });
+
+  elements.uploadTab.addEventListener('click', () => {
+    if (!elements.uploadTab.disabled) {
+      elements.switchTab('upload');
+    }
+  });
+
+  // TSVファイルパス設定
+  elements.browseTsvBtn.addEventListener('click', async () => {
+    try {
+      const filePath = await window.electronAPI.selectFile();
+      if (filePath) {
+        state.setConfiguredTsvPath(filePath);
+        elements.setTsvPath(filePath);
+        updateSetupStatus(elements, state);
+        elements.updateStatus('TSVファイルパスを設定しました', 'success');
+      }
+    } catch (error) {
+      console.error('ファイル選択エラー:', error);
+      elements.updateStatus('ファイル選択に失敗しました: ' + error.message, 'error');
+    }
+  });
+
+  // 設定画面に戻る
+  elements.editSettingsBtn.addEventListener('click', () => {
+    elements.switchTab('settings');
+  });
+
+  // 設定ファイルを使用
+  elements.useConfiguredFileBtn.addEventListener('click', () => {
+    if (state.configuredTsvPath) {
+      state.setSelectedFile(state.configuredTsvPath);
+      elements.showSelectedFile(state.configuredTsvPath);
+      elements.updateStatus('設定されたTSVファイルを使用します', 'success');
+    } else {
+      elements.updateStatus('TSVファイルパスが設定されていません', 'error');
+    }
+  });
+
+  // ファイル選択（手動）
   elements.selectFileBtn.addEventListener('click', () => {
     handleFileSelect(elements, state);
   });
@@ -31,7 +75,6 @@ function registerEventListeners() {
   });
 
   // Google Driveアップロード
-  // Google Driveアップロード
   elements.uploadBtn.addEventListener('click', () => {
     handleUpload(elements, state);
   });
@@ -39,6 +82,7 @@ function registerEventListeners() {
   // 認証成功イベント
   window.electronAPI.onAuthSuccess((data) => {
     handleAuthSuccess(elements, state, data);
+    updateSetupStatus(elements, state);
   });
 }
 
@@ -53,7 +97,7 @@ async function initializeApp() {
   registerEventListeners();
 
   // 初期メッセージを表示
-  elements.updateStatus('TSVファイルを選択してください', 'info');
+  elements.updateStatus('設定を完了してください', 'info');
 }
 
 // アプリケーション起動

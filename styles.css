@@ -248,3 +248,206 @@ footer {
   background: #fffaf0;
   color: #7c2d12;
 }
+
+/* タブナビゲーション */
+.tab-nav {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 10px;
+  border-radius: 12px;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 15px 20px;
+  font-size: 1.1rem;
+  background: rgba(255, 255, 255, 0.8);
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 600;
+}
+
+.tab-button:hover:not(:disabled) {
+  background: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tab-button.active {
+  background: white;
+  color: #667eea;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.tab-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* ビュー切り替え */
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* セットアップ状況カード */
+.setup-status-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.setup-status-card h2 {
+  color: white;
+  border-bottom-color: rgba(255, 255, 255, 0.3);
+}
+
+.setup-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.setup-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.setup-item.completed {
+  background: rgba(72, 187, 120, 0.2);
+  border: 2px solid rgba(72, 187, 120, 0.5);
+}
+
+.setup-icon {
+  font-size: 1.5rem;
+  width: 30px;
+  text-align: center;
+}
+
+.setup-item.completed .setup-icon::before {
+  content: '✓';
+  color: #48bb78;
+  font-weight: bold;
+}
+
+.setup-text {
+  flex: 1;
+  font-size: 1.1rem;
+}
+
+.setup-message {
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 15px;
+}
+
+.setup-message.warning {
+  background: rgba(237, 137, 54, 0.2);
+  border: 2px solid rgba(237, 137, 54, 0.5);
+}
+
+.setup-message.success {
+  background: rgba(72, 187, 120, 0.2);
+  border: 2px solid rgba(72, 187, 120, 0.5);
+}
+
+/* 設定画面のセクション */
+.section-description {
+  color: #666;
+  margin-bottom: 15px;
+  font-size: 0.95rem;
+}
+
+.input-with-button {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.input-with-button input {
+  flex: 1;
+}
+
+.input-with-button .btn {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.btn-small {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+.btn-large {
+  padding: 18px 36px;
+  font-size: 1.2rem;
+}
+
+.auth-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+/* 設定サマリー */
+.settings-summary {
+  background: #f7fafc;
+  border-left: 4px solid #667eea;
+}
+
+.summary-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.summary-item:last-of-type {
+  border-bottom: none;
+}
+
+.summary-value {
+  color: #667eea;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.upload-section {
+  text-align: center;
+}
+
+.upload-section .btn-large {
+  margin-top: 10px;
+}

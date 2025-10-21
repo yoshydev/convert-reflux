@@ -2,6 +2,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
   getBuildConfig: () => ipcRenderer.invoke('get-build-config'),
+  selectFile: () => ipcRenderer.invoke('select-tsv-file'), // TSVファイル選択（汎用）
   selectTsvFile: () => ipcRenderer.invoke('select-tsv-file'),
   convertTsvToCsv: (tsvPath, outputFileName) => ipcRenderer.invoke('convert-tsv-to-csv', tsvPath, outputFileName),
   saveCredentials: (credentials) => ipcRenderer.invoke('save-credentials', credentials),

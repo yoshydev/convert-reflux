@@ -13,34 +13,102 @@
       <p class="subtitle">TSVファイルをCSVに変換してGoogle Driveにアップロード</p>
     </header>
 
+    <!-- タブナビゲーション -->
+    <nav class="tab-nav">
+      <button id="settingsTab" class="tab-button active">⚙️ 設定</button>
+      <button id="uploadTab" class="tab-button" disabled>☁️ アップロード</button>
+    </nav>
+
     <main>
-      <!-- Google Drive設定 -->
-      <section class="card" id="authSection">
-        <h2>Google Drive 連携（オプション）</h2>
-        <button id="authenticateBtn" class="btn btn-secondary">🔐 Google Drive 認証</button>
-        <button id="disconnectBtn" class="btn btn-warning" style="display: none;">🔓 連携解除</button>
-        <div id="authStatus" class="info-box"></div>
-      </section>
+      <!-- 設定画面 -->
+      <div id="settingsView" class="view active">
+        <!-- 設定完了状態の表示 -->
+        <section class="card setup-status-card">
+          <h2>📋 セットアップ状況</h2>
+          <div class="setup-checklist">
+            <div class="setup-item" id="setupItemTsv">
+              <span class="setup-icon">⏹</span>
+              <span class="setup-text">TSVファイルのパス設定</span>
+            </div>
+            <div class="setup-item" id="setupItemAuth">
+              <span class="setup-icon">⏹</span>
+              <span class="setup-text">Google Drive 認証</span>
+            </div>
+          </div>
+          <div id="setupMessage" class="setup-message warning">
+            設定を完了してアップロード機能を有効にしてください
+          </div>
+        </section>
 
-      <!-- ステップ1: ファイル選択 -->
-      <section class="card">
-        <h2>ステップ1: TSVファイルを選択</h2>
-        <button id="selectFile" class="btn btn-primary">📁 TSVファイルを選択</button>
-        <div id="selectedFile" class="info-box"></div>
-      </section>
+        <!-- TSVファイルパス設定 -->
+        <section class="card">
+          <h2>📁 TSVファイルパス設定</h2>
+          <p class="section-description">定期的にアップロードするTSVファイルのパスを設定してください</p>
+          <div class="form-group">
+            <label for="tsvPath">TSVファイルパス</label>
+            <div class="input-with-button">
+              <input type="text" id="tsvPath" placeholder="例: C:\Users\user\Documents\tracker.tsv" readonly>
+              <button id="browseTsvBtn" class="btn btn-primary btn-small">📂 参照</button>
+            </div>
+            <small>設定したファイルは自動的に読み込まれます</small>
+          </div>
+          <div id="tsvPathStatus" class="info-box" style="display: none;"></div>
+        </section>
 
-      <!-- ステップ2: アップロード -->
-      <section class="card">
-        <h2>ステップ2: Google Driveにアップロード</h2>
-        <p>アップロード時に自動的に「inf_score.csv」に変換されます</p>
-        <button id="uploadBtn" class="btn btn-success" disabled>☁️ Google Driveにアップロード</button>
-      </section>
+        <!-- Google Drive認証設定 -->
+        <section class="card">
+          <h2>🔐 Google Drive 認証</h2>
+          <p class="section-description">Google Driveへのアップロードには認証が必要です</p>
+          <div class="auth-controls">
+            <button id="authenticateBtn" class="btn btn-secondary">🔐 Google Drive 認証</button>
+            <button id="disconnectBtn" class="btn btn-warning" style="display: none;">🔓 連携解除</button>
+          </div>
+          <div id="authStatus" class="info-box"></div>
+        </section>
+      </div>
 
-      <!-- ステータス表示 -->
-      <section class="card status-card">
-        <h2>ステータス</h2>
-        <div id="status" class="status-box">準備完了</div>
-      </section>
+      <!-- アップロード画面 -->
+      <div id="uploadView" class="view">
+        <!-- クイック設定確認 -->
+        <section class="card settings-summary">
+          <h2>📝 現在の設定</h2>
+          <div class="summary-item">
+            <strong>TSVファイル:</strong>
+            <span id="summaryTsvPath" class="summary-value">未設定</span>
+          </div>
+          <div class="summary-item">
+            <strong>Google Drive:</strong>
+            <span id="summaryAuthStatus" class="summary-value">未認証</span>
+          </div>
+          <button id="editSettingsBtn" class="btn btn-small btn-secondary">⚙️ 設定を編集</button>
+        </section>
+
+        <!-- ファイル選択（手動選択の場合） -->
+        <section class="card">
+          <h2>📄 ファイル確認</h2>
+          <p class="section-description">設定されたTSVファイルを使用、または別のファイルを選択できます</p>
+          <div class="button-group">
+            <button id="useConfiguredFile" class="btn btn-primary">✓ 設定ファイルを使用</button>
+            <button id="selectFile" class="btn btn-secondary">📁 別のファイルを選択</button>
+          </div>
+          <div id="selectedFile" class="info-box"></div>
+        </section>
+
+        <!-- アップロード実行 -->
+        <section class="card upload-section">
+          <h2>☁️ Google Driveにアップロード</h2>
+          <p class="section-description">アップロード時に自動的に「inf_score.csv」に変換されます</p>
+          <button id="uploadBtn" class="btn btn-success btn-large" disabled>
+            ☁️ Google Driveにアップロード
+          </button>
+        </section>
+
+        <!-- ステータス表示 -->
+        <section class="card status-card">
+          <h2>ステータス</h2>
+          <div id="status" class="status-box">準備完了</div>
+        </section>
+      </div>
     </main>
 
     <footer>
