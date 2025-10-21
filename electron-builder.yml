@@ -15,4 +15,5 @@ extraResources:
     to: services
     filter:
       - auth-page.html
+      - auth-page-modern.html
 publish: null

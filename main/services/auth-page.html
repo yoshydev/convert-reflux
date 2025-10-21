@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{TITLE}}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,122 +14,223 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 20px;
+            font-feature-settings: 'rlig' 1, 'calt' 1;
         }
 
         .container {
             background: white;
-            border-radius: 16px;
+            border-radius: 24px;
             padding: 48px 40px;
-            max-width: 480px;
+            max-width: 500px;
             width: 100%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
             text-align: center;
-            animation: slideIn 0.4s ease-out;
+            animation: slideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
         }
 
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(-30px) scale(0.95);
             }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
 
+        .icon {
+            width: 88px;
+            height: 88px;
+            margin: 0 auto 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 600;
+            animation: iconBounce 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+            position: relative;
+        }
+
+        @keyframes iconBounce {
+            0% {
+                transform: scale(0) rotate(-180deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1) rotate(-10deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .icon.success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .icon.error {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
+        }
+
+        .icon.cancelled {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #1f2937;
+            line-height: 1.2;
+            animation: textSlide 0.6s ease-out 0.3s both;
+        }
+
+        @keyframes textSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        .icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            animation: scaleIn 0.5s ease-out 0.2s both;
-        }
-
-        @keyframes scaleIn {
-            from {
-                transform: scale(0);
-            }
-
-            to {
-                transform: scale(1);
-            }
-        }
-
-        .icon.success {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        }
-
-        .icon.error {
-            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
-        }
-
-        .icon.cancelled {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
-
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: #1a202c;
-        }
-
         p {
-            font-size: 16px;
-            color: #4a5568;
+            font-size: 18px;
+            color: #6b7280;
             line-height: 1.6;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            animation: textSlide 0.6s ease-out 0.4s both;
         }
 
         .instruction {
-            margin-top: 24px;
-            padding: 16px;
-            background: #f7fafc;
-            border-radius: 8px;
-            font-size: 14px;
-            color: #718096;
+            margin-top: 32px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 16px;
+            font-size: 15px;
+            color: #64748b;
+            line-height: 1.5;
+            border: 1px solid #e2e8f0;
+            animation: textSlide 0.6s ease-out 0.5s both;
         }
 
         .close-btn {
-            margin-top: 32px;
-            padding: 14px 32px;
+            margin-top: 40px;
+            padding: 16px 32px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            animation: textSlide 0.6s ease-out 0.6s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .close-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
         }
 
         .close-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+        }
+
+        .close-btn:hover::before {
+            left: 100%;
         }
 
         .close-btn:active {
-            transform: translateY(0);
+            transform: translateY(-1px);
         }
 
         .auto-close-info {
-            margin-top: 16px;
-            font-size: 13px;
-            color: #a0aec0;
+            margin-top: 24px;
+            font-size: 14px;
+            color: #9ca3af;
+            animation: textSlide 0.6s ease-out 0.7s both;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #e5e7eb;
+            border-top: 2px solid #6b7280;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 32px 24px;
+                margin: 16px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            p {
+                font-size: 16px;
+            }
+            
+            .icon {
+                width: 72px;
+                height: 72px;
+                font-size: 36px;
+            }
         }
     </style>
 </head>
@@ -139,46 +241,145 @@
         <h1>{{TITLE}}</h1>
         <p>{{MESSAGE}}</p>
         <div class="instruction">{{INSTRUCTION}}</div>
-        <button class="close-btn" id="closeBtn">ウィンドウを閉じる</button>
-        <div class="auto-close-info">このウィンドウは5秒後に自動的に閉じます</div>
+        <button class="close-btn" id="closeBtn">このタブを閉じる</button>
+        <div class="auto-close-info">
+            <div class="spinner"></div>
+            外部ブラウザの場合、このページは5秒後に空白ページに移動します
+        </div>
     </div>
 
     <script>
-        // ウィンドウを閉じる処理
-        function closeWindow() {
-            // 複数の方法を試す
-            if (window.opener) {
-                window.close();
-            } else {
-                // window.close()が動作しない場合の代替手段
+        // DOMが読み込まれてから実行
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Auth page loaded');
+            
+            // ボタンクリック時の処理
+            const closeBtn = document.getElementById('closeBtn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    console.log('Close button clicked');
+                    closeWindow();
+                });
+            }
+
+            // ウィンドウを閉じる関数
+            function closeWindow() {
+                console.log('Attempting to close window...');
+                
+                // Electronアプリ内かどうかを確認
+                const isElectronApp = window.electronAPI || window.require;
+                
+                if (isElectronApp) {
+                    // Electronアプリ内の場合は従来の方法を試す
+                    try {
+                        // 1. ElectronのAPIがある場合（優先度最高）
+                        if (window.electronAPI && window.electronAPI.closeWindow) {
+                            console.log('Using electronAPI.closeWindow()');
+                            window.electronAPI.closeWindow();
+                            return;
+                        }
+                    } catch (e) {
+                        console.log('electronAPI.closeWindow() failed:', e);
+                    }
+                    
+                    try {
+                        // 2. requiredのelectronモジュール（古いパターン）
+                        if (window.require) {
+                            const { remote } = window.require('electron');
+                            if (remote && remote.getCurrentWindow) {
+                                console.log('Using remote.getCurrentWindow().close()');
+                                remote.getCurrentWindow().close();
+                                return;
+                            }
+                        }
+                    } catch (e) {
+                        console.log('remote.getCurrentWindow().close() failed:', e);
+                    }
+                } else {
+                    // 外部ブラウザの場合は空白ページにリダイレクト
+                    console.log('Running in external browser, redirecting to blank page');
+                    try {
+                        // about:blankにリダイレクトしてタブを無効化
+                        window.location.href = 'about:blank';
+                        return;
+                    } catch (e) {
+                        console.log('Redirect to about:blank failed:', e);
+                    }
+                }
+                
+                // 最後の手段：標準のwindow.close()を試す
                 try {
-                    window.open('', '_self').close();
+                    console.log('Using window.close()');
+                    window.close();
                 } catch (e) {
-                    // 最後の手段として、ユーザーに手動で閉じてもらう
-                    alert('このウィンドウを手動で閉じてください（Ctrl+W または Alt+F4）');
+                    console.log('window.close() failed:', e);
+                }
+                
+                // 全て失敗した場合：手動で閉じるよう指示
+                console.log('All close methods failed, showing manual close instruction');
+                const container = document.querySelector('.container');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="icon success">✓</div>
+                        <h1>認証が完了しました</h1>
+                        <p>このブラウザタブまたはウィンドウを手動で閉じて、<br>アプリケーションに戻ってください。</p>
+                        <div style="background: #f0f9ff; border: 2px solid #0ea5e9; border-radius: 8px; padding: 16px; margin: 20px 0; color: #0c4a6e;">
+                            <strong>📋 次の手順：</strong><br>
+                            1. このタブ/ウィンドウを閉じる<br>
+                            2. アプリケーションに戻る<br>
+                            3. ファイル変換を開始する
+                        </div>
+                    `;
                 }
             }
-        }
 
-        // ボタンクリックイベント
-        document.getElementById('closeBtn').addEventListener('click', closeWindow);
+            // 5秒後に自動でウィンドウを閉じる
+            let countdown = 5;
+            const autoCloseInfo = document.querySelector('.auto-close-info');
+            
+            const updateCountdown = () => {
+                if (autoCloseInfo) {
+                    const isElectronApp = window.electronAPI || window.require;
+                    if (isElectronApp) {
+                        autoCloseInfo.innerHTML = `
+                            <div class="spinner"></div>
+                            このウィンドウは${countdown}秒後に自動的に閉じます
+                        `;
+                    } else {
+                        autoCloseInfo.innerHTML = `
+                            <div class="spinner"></div>
+                            ${countdown}秒後に空白ページに移動します（その後このタブを閉じてください）
+                        `;
+                    }
+                }
+                countdown--;
+                
+                if (countdown < 0) {
+                    console.log('Auto-closing window');
+                    closeWindow();
+                } else {
+                    setTimeout(updateCountdown, 1000);
+                }
+            };
+            
+            // カウントダウン開始
+            setTimeout(updateCountdown, 1000);
 
-        // 5秒後に自動的に閉じる
-        setTimeout(() => {
-            closeWindow();
-        }, 5000);
-
-        // カウントダウン表示（オプション）
-        let countdown = 5;
-        const autoCloseInfo = document.querySelector('.auto-close-info');
-        const countdownInterval = setInterval(() => {
-            countdown--;
-            if (countdown > 0) {
-                autoCloseInfo.textContent = `このウィンドウは${countdown}秒後に自動的に閉じます`;
-            } else {
-                clearInterval(countdownInterval);
-            }
-        }, 1000);
+            // ESCキーでウィンドウを閉じる
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    console.log('ESC key pressed');
+                    closeWindow();
+                }
+            });
+            
+            // ページフォーカス時に少し遅延してカウントダウンを表示
+            setTimeout(() => {
+                if (autoCloseInfo) {
+                    autoCloseInfo.style.opacity = '1';
+                }
+            }, 500);
+        });
     </script>
 </body>
 

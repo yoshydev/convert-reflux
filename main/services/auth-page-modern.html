@@ -194,6 +194,8 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
         }
 
         .spinner {
@@ -239,29 +241,144 @@
         <h1>{{TITLE}}</h1>
         <p>{{MESSAGE}}</p>
         <div class="instruction">{{INSTRUCTION}}</div>
-        <button class="close-btn" id="closeBtn">ウィンドウを閉じる</button>
+        <button class="close-btn" id="closeBtn">このタブを閉じる</button>
         <div class="auto-close-info">
             <div class="spinner"></div>
-            このウィンドウは5秒後に自動的に閉じます
+            外部ブラウザの場合、このページは5秒後に空白ページに移動します
         </div>
     </div>
 
     <script>
-        // ボタンクリック時の処理
-        document.getElementById('closeBtn').addEventListener('click', function() {
-            window.close();
-        });
-
-        // 5秒後に自動でウィンドウを閉じる
-        setTimeout(function() {
-            window.close();
-        }, 5000);
-
-        // ESCキーでウィンドウを閉じる
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                window.close();
+        // DOMが読み込まれてから実行
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Auth page loaded');
+            
+            // ボタンクリック時の処理
+            const closeBtn = document.getElementById('closeBtn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    console.log('Close button clicked');
+                    closeWindow();
+                });
             }
+
+            // ウィンドウを閉じる関数
+            function closeWindow() {
+                console.log('Attempting to close window...');
+                
+                // Electronアプリ内かどうかを確認
+                const isElectronApp = window.electronAPI || window.require;
+                
+                if (isElectronApp) {
+                    // Electronアプリ内の場合は従来の方法を試す
+                    try {
+                        // 1. ElectronのAPIがある場合（優先度最高）
+                        if (window.electronAPI && window.electronAPI.closeWindow) {
+                            console.log('Using electronAPI.closeWindow()');
+                            window.electronAPI.closeWindow();
+                            return;
+                        }
+                    } catch (e) {
+                        console.log('electronAPI.closeWindow() failed:', e);
+                    }
+                    
+                    try {
+                        // 2. requiredのelectronモジュール（古いパターン）
+                        if (window.require) {
+                            const { remote } = window.require('electron');
+                            if (remote && remote.getCurrentWindow) {
+                                console.log('Using remote.getCurrentWindow().close()');
+                                remote.getCurrentWindow().close();
+                                return;
+                            }
+                        }
+                    } catch (e) {
+                        console.log('remote.getCurrentWindow().close() failed:', e);
+                    }
+                } else {
+                    // 外部ブラウザの場合は空白ページにリダイレクト
+                    console.log('Running in external browser, redirecting to blank page');
+                    try {
+                        // about:blankにリダイレクトしてタブを無効化
+                        window.location.href = 'about:blank';
+                        return;
+                    } catch (e) {
+                        console.log('Redirect to about:blank failed:', e);
+                    }
+                }
+                
+                // 最後の手段：標準のwindow.close()を試す
+                try {
+                    console.log('Using window.close()');
+                    window.close();
+                } catch (e) {
+                    console.log('window.close() failed:', e);
+                }
+                
+                // 全て失敗した場合：手動で閉じるよう指示
+                console.log('All close methods failed, showing manual close instruction');
+                const container = document.querySelector('.container');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="icon success">✓</div>
+                        <h1>認証が完了しました</h1>
+                        <p>このブラウザタブまたはウィンドウを手動で閉じて、<br>アプリケーションに戻ってください。</p>
+                        <div style="background: #f0f9ff; border: 2px solid #0ea5e9; border-radius: 8px; padding: 16px; margin: 20px 0; color: #0c4a6e;">
+                            <strong>📋 次の手順：</strong><br>
+                            1. このタブ/ウィンドウを閉じる<br>
+                            2. アプリケーションに戻る<br>
+                            3. ファイル変換を開始する
+                        </div>
+                    `;
+                }
+            }
+
+            // 5秒後に自動でウィンドウを閉じる
+            let countdown = 5;
+            const autoCloseInfo = document.querySelector('.auto-close-info');
+            
+            const updateCountdown = () => {
+                if (autoCloseInfo) {
+                    const isElectronApp = window.electronAPI || window.require;
+                    if (isElectronApp) {
+                        autoCloseInfo.innerHTML = `
+                            <div class="spinner"></div>
+                            このウィンドウは${countdown}秒後に自動的に閉じます
+                        `;
+                    } else {
+                        autoCloseInfo.innerHTML = `
+                            <div class="spinner"></div>
+                            ${countdown}秒後に空白ページに移動します（その後このタブを閉じてください）
+                        `;
+                    }
+                }
+                countdown--;
+                
+                if (countdown < 0) {
+                    console.log('Auto-closing window');
+                    closeWindow();
+                } else {
+                    setTimeout(updateCountdown, 1000);
+                }
+            };
+            
+            // カウントダウン開始
+            setTimeout(updateCountdown, 1000);
+
+            // ESCキーでウィンドウを閉じる
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    console.log('ESC key pressed');
+                    closeWindow();
+                }
+            });
+            
+            // ページフォーカス時に少し遅延してカウントダウンを表示
+            setTimeout(() => {
+                if (autoCloseInfo) {
+                    autoCloseInfo.style.opacity = '1';
+                }
+            }, 500);
         });
     </script>
 </body>

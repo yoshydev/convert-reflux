@@ -115,4 +115,19 @@ export function registerIpcHandlers(mainWindow: BrowserWindow): void {
       return { success: false, error: (error as Error).message };
     }
   });
+
+  // ウィンドウを閉じる（認証ページ用）
+  ipcMain.handle('close-window', async () => {
+    try {
+      const focusedWindow = BrowserWindow.getFocusedWindow();
+      if (focusedWindow) {
+        focusedWindow.close();
+        return { success: true };
+      }
+      return { success: false, error: 'No focused window found' };
+    } catch (error) {
+      console.error('Close window error:', error);
+      return { success: false, error: (error as Error).message };
+    }
+  });
 }

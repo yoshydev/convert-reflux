@@ -47,6 +47,9 @@ export interface ElectronAPI {
 
   // 認証成功イベントのリスナー
   onAuthSuccess: (callback: (data: { tokens: any }) => void) => () => void;
+
+  // ウィンドウを閉じる
+  closeWindow: () => Promise<{ success: boolean; error?: string }>;
 }
 
 const electronAPI: ElectronAPI = {
@@ -65,7 +68,8 @@ const electronAPI: ElectronAPI = {
     return () => {
       ipcRenderer.removeListener('auth-success', subscription);
     };
-  }
+  },
+  closeWindow: () => ipcRenderer.invoke('close-window')
 };
 
 contextBridge.exposeInMainWorld('electronAPI', electronAPI);
