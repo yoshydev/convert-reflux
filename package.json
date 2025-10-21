@@ -4,6 +4,7 @@
   "description": "A desktop application to convert Reflux TSV files to Infinitas counter format.",
   "version": "1.0.0",
   "author": "yoshydev <24353896+yoshydev@users.noreply.github.com>",
+  "license": "MIT",
   "main": "app/background.js",
   "scripts": {
     "dev": "nextron",
