@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reflux Converter</title>
   <link rel="stylesheet" href="./styles.css">
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -27,11 +29,11 @@
           <h2>📋 セットアップ状況</h2>
           <div class="setup-checklist">
             <div class="setup-item" id="setupItemTsv">
-              <span class="setup-icon">⏹</span>
+              <span class="setup-icon">📄</span>
               <span class="setup-text">TSVファイルのパス設定</span>
             </div>
             <div class="setup-item" id="setupItemAuth">
-              <span class="setup-icon">⏹</span>
+              <span class="setup-icon">🔐</span>
               <span class="setup-text">Google Drive 認証</span>
             </div>
           </div>
@@ -47,7 +49,8 @@
           <div class="form-group">
             <label for="tsvPath">TSVファイルパス</label>
             <div class="input-with-button">
-              <input type="text" id="tsvPath" placeholder="例: C:\Users\user\Documents\Reflux.x.xx.xx\tracker.tsv" readonly>
+              <input type="text" id="tsvPath" placeholder="例: C:\Users\user\Documents\Reflux.x.xx.xx\tracker.tsv"
+                readonly>
               <button id="browseTsvBtn" class="btn btn-primary btn-small">📂 参照</button>
             </div>
             <small>設定したファイルは自動的に読み込まれます</small>
@@ -107,4 +110,5 @@
 
   <script type="module" src="./renderer.js"></script>
 </body>
+
 </html>

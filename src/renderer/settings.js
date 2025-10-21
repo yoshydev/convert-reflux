@@ -19,7 +19,7 @@ export async function initializeSettings(elements, state) {
     if (buildConfig.hasClientId && buildConfig.hasClientSecret) {
       // ビルド時に認証情報が埋め込まれている場合
       elements.updateAuthStatus(
-        '認証情報が設定されています。「Google Drive 認証」ボタンをクリックしてください。',
+        '「Google Drive 認証」ボタンをクリックしてください。',
         'success'
       );
     }
