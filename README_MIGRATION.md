@@ -59,7 +59,7 @@ GOOGLE_CLIENT_SECRET=your_client_secret_here
 npm run dev
 ```
 
-ビルド設定（`build-config.js`）が実行され、`.env` の内容から `config.js` が自動生成されます。
+`.env` ファイルから環境変数が直接読み込まれます。
 
 ## ビルド
 
@@ -113,7 +113,6 @@ reflux-converter/
 │   └── styles/
 │       └── globals.css   # グローバルスタイル
 ├── resources/            # アプリアイコンなど
-├── build-config.js       # ビルド時設定生成スクリプト
 ├── electron-builder.yml  # Electron Builderの設定
 ├── package.json
 └── tsconfig.json
@@ -122,7 +121,7 @@ reflux-converter/
 ## セキュリティ
 
 - Google OAuth2.0 トークンは `electron-store` で暗号化して保存されます
-- 認証情報（Client ID/Secret）は `.env` ファイルで管理され、ビルド時に埋め込まれます
+- 認証情報（Client ID/Secret）は `.env` ファイルで管理され、実行時に読み込まれます
 - コンテキストアイソレーション（`contextIsolation: true`）を有効化
 
 ## トラブルシューティング

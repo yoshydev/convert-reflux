@@ -1,20 +1,21 @@
 import Store from 'electron-store';
+import { config } from 'dotenv';
 
-// ビルド時に埋め込まれた設定を読み込み
-let buildConfig: { GOOGLE_CLIENT_ID: string; GOOGLE_CLIENT_SECRET: string };
-try {
-  buildConfig = require('../../config.js');
-  console.log('✅ ビルド時の設定を読み込みました');
-} catch (error) {
-  console.warn('⚠️  config.js が見つかりません。npm start を実行してください。');
-  buildConfig = {
-    GOOGLE_CLIENT_ID: '',
-    GOOGLE_CLIENT_SECRET: ''
-  };
+// 環境変数を読み込み
+config();
+
+// 環境変数から直接取得
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
+const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
+
+if (CLIENT_ID && CLIENT_SECRET) {
+  console.log('✅ 環境変数から認証情報を読み込みました');
+} else {
+  console.warn('⚠️  環境変数 GOOGLE_CLIENT_ID と GOOGLE_CLIENT_SECRET が設定されていません');
+  console.warn('   .env ファイルを作成し、以下の内容を設定してください:');
+  console.warn('   GOOGLE_CLIENT_ID=your_client_id');
+  console.warn('   GOOGLE_CLIENT_SECRET=your_client_secret');
 }
-
-const CLIENT_ID = buildConfig.GOOGLE_CLIENT_ID;
-const CLIENT_SECRET = buildConfig.GOOGLE_CLIENT_SECRET;
 
 // アプリ専用のフォルダ名
 export const APP_FOLDER_NAME = 'Reflux-Converter';

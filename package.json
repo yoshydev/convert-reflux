@@ -6,9 +6,8 @@
   "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
   "main": "app/background.js",
   "scripts": {
-    "prebuild": "node build-config.js",
-    "dev": "node build-config.js && nextron",
-    "build": "node build-config.js && nextron build",
+    "dev": "nextron",
+    "build": "nextron build",
     "postinstall": "electron-builder install-app-deps",
     "lint": "eslint main renderer --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint main renderer --ext .ts,.tsx,.js,.jsx --fix",

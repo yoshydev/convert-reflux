@@ -94,7 +94,7 @@ export default function HomePage() {
       const buildConfig = await window.electronAPI.getBuildConfig()
       if (!buildConfig.hasClientId || !buildConfig.hasClientSecret) {
         setAuthStatus({
-          message: 'ビルド設定が不完全です。build-config.jsを確認してください',
+          message: '環境変数の設定が不完全です。.envファイルを確認してください',
           type: 'error'
         })
         setIsAuthenticating(false)
@@ -218,7 +218,7 @@ export default function HomePage() {
               className={`flex-1 py-3 px-4 font-medium transition-colors ${activeTab === 'settings'
                 ? 'bg-indigo-600 text-white'
                 : 'bg-white text-gray-700 hover:bg-gray-100'
-              }`}
+                }`}
             >
               ⚙️ 設定
             </button>
@@ -230,7 +230,7 @@ export default function HomePage() {
                 : isSetupComplete
                   ? 'bg-white text-gray-700 hover:bg-gray-100'
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-              }`}
+                }`}
             >
               ☁️ アップロード
             </button>
@@ -257,7 +257,7 @@ export default function HomePage() {
                     className={`p-3 rounded ${isSetupComplete
                       ? 'bg-green-100 text-green-800'
                       : 'bg-yellow-100 text-yellow-800'
-                    }`}
+                      }`}
                   >
                     {isSetupComplete
                       ? '✓ セットアップ完了！アップロードタブに移動できます'
@@ -323,7 +323,7 @@ export default function HomePage() {
                           : authStatus.type === 'warning'
                             ? 'bg-yellow-100 text-yellow-800'
                             : 'bg-blue-100 text-blue-800'
-                      }`}
+                        }`}
                     >
                       {authStatus.message}
                     </div>
@@ -382,7 +382,7 @@ export default function HomePage() {
                         : status.type === 'warning'
                           ? 'bg-yellow-100 text-yellow-800'
                           : 'bg-blue-100 text-blue-800'
-                    }`}
+                      }`}
                   >
                     {status.message}
                   </div>
