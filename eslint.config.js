@@ -17,6 +17,7 @@ module.exports = [
       'scripts/**',
       'build-config.js',
       'main/build-config.ts',
+      'main/build-config.d.ts',
       'eslint.config.js',
       'next-env.d.ts',
       'electron-builder.yml',
