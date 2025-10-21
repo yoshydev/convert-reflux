@@ -1,5 +1,4 @@
 import { exec } from 'child_process';
-import { promises as fs } from 'fs';
 
 /**
  * WSL環境かどうかを判定

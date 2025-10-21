@@ -31,16 +31,15 @@ export function useAuth() {
             type: 'success'
           })
         }
-      } catch (error) {
-        console.error('認証初期化エラー:', error)
+      } catch {
+        // 認証初期化エラーは無視
       }
     }
 
     initializeAuth()
 
     // 認証成功イベントのリスナーを設定
-    const unsubscribe = window.electronAPI.onAuthSuccess((data) => {
-      console.log('認証成功:', data)
+    const unsubscribe = window.electronAPI.onAuthSuccess(() => {
       setIsAuthenticated(true)
       setAuthStatus({
         message: '✓ 認証成功! Google Driveにアップロードできます。',

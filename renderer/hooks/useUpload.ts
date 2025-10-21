@@ -47,7 +47,7 @@ export function useUpload({ tsvPath, isAuthenticated, setStatus }: UploadHookPro
       await window.electronAPI.setTokens(null)
 
       const result = await window.electronAPI.uploadToDrive({
-        filePath: convertResult.csvPath!,
+        filePath: convertResult.csvPath ?? '',
         fileName: 'inf_score.csv'
       })
 

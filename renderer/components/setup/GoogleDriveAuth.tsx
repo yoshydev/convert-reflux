@@ -67,7 +67,7 @@ export function GoogleDriveAuth({
 
         {authStatus.message && (
           <StatusIndicator
-            type={authStatus.type as any}
+            type={authStatus.type}
             message={authStatus.message}
             size="sm"
           />

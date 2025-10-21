@@ -92,7 +92,7 @@ function getCurrentDateTime(): string {
 /**
  * MODEごとのデータを抽出してCSVレコードに変換
  */
-function extractModeData(row: TsvRow, mode: Mode, columnMap: Map<string, number>): CsvRecord | null {
+function extractModeData(row: TsvRow, mode: Mode, _columnMap: Map<string, number>): CsvRecord | null {
   const lampColumn = `${mode} Lamp`;
   const ratingColumn = `${mode} Rating`;
   const exScoreColumn = `${mode} EX Score`;

@@ -1,21 +1,19 @@
-import { promises as fs } from 'fs';
 import http from 'http';
-import path from 'path';
 
 import { shell, BrowserWindow } from 'electron';
-import { google } from 'googleapis';
+import { google, Auth } from 'googleapis';
 
 import * as config from '../utils/config';
 import { isWSL, openUrlInWSL } from '../utils/wsl';
 
 import { getAuthPageHTML } from './auth-page-renderer';
 
-let oauth2Client: any = null;
+let oauth2Client: Auth.OAuth2Client | null = null;
 
 /**
  * OAuth2クライアントを取得
  */
-export function getOAuth2Client(): any {
+export function getOAuth2Client(): Auth.OAuth2Client | null {
   return oauth2Client;
 }
 
@@ -26,7 +24,7 @@ export function createOAuth2Client(
   clientId: string,
   clientSecret: string,
   redirectUri: string = 'http://localhost:3000/oauth2callback'
-): any {
+): Auth.OAuth2Client {
   oauth2Client = new google.auth.OAuth2(clientId, clientSecret, redirectUri);
   return oauth2Client;
 }
@@ -34,7 +32,7 @@ export function createOAuth2Client(
 /**
  * 保存されたトークンでOAuth2クライアントを復元
  */
-export function restoreOAuth2Client(tokens?: any): any {
+export function restoreOAuth2Client(tokens?: Record<string, unknown>): Auth.OAuth2Client {
   const clientId = config.getClientId();
   const clientSecret = config.getClientSecret();
   const savedTokens = tokens || config.getTokens();
@@ -48,7 +46,7 @@ export function restoreOAuth2Client(tokens?: any): any {
   }
 
   oauth2Client = createOAuth2Client(clientId, clientSecret);
-  oauth2Client.setCredentials(savedTokens);
+  oauth2Client.setCredentials(savedTokens as Auth.Credentials);
   return oauth2Client;
 }
 
@@ -59,13 +57,18 @@ export function clearOAuth2Client(): void {
   oauth2Client = null;
 }
 
+interface AuthSuccessResult {
+  success: boolean;
+  message: string;
+}
+
 /**
  * OAuthコールバックサーバーを起動してHTMLレスポンスを返す
  */
 function createOAuthCallbackServer(
-  oauth2Client: any,
+  oauth2Client: Auth.OAuth2Client,
   mainWindow: BrowserWindow,
-  onSuccess: (result: any) => void,
+  onSuccess: (result: AuthSuccessResult) => void,
   onError: (error: Error) => void
 ): http.Server {
   const server = http.createServer(async (req, res) => {
@@ -89,7 +92,7 @@ function createOAuthCallbackServer(
             // 認証コードからトークンを取得
             const { tokens } = await oauth2Client.getToken(code);
             oauth2Client.setCredentials(tokens);
-            config.saveTokens(tokens);
+            config.saveTokens(tokens as Record<string, unknown>);
 
             // 成功メッセージを表示
             res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
@@ -134,7 +137,7 @@ function createOAuthCallbackServer(
 export async function initGoogleAuth(
   credentials: { clientId?: string; clientSecret?: string },
   mainWindow: BrowserWindow
-): Promise<any> {
+): Promise<AuthSuccessResult> {
   let server: http.Server | null = null;
 
   try {
@@ -184,14 +187,14 @@ export async function initGoogleAuth(
 
       // タイムアウト処理（5分）
       setTimeout(() => {
-        if (server && (server as any).listening) {
+        if (server?.listening) {
           server.close();
           reject(new Error('認証がタイムアウトしました（5分）'));
         }
       }, 5 * 60 * 1000);
     });
   } catch (error) {
-    if (server && (server as any).listening) {
+    if (server?.listening) {
       server.close();
     }
     console.error('Auth init error:', error);
