@@ -14,7 +14,6 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
       defaultEncoding: 'utf-8',
-      devTools: true,
       // DevTools の警告を抑制
       enableRemoteModule: false,
       contextIsolation: true
@@ -22,6 +21,11 @@ function createWindow() {
   });
 
   mainWindow.loadFile('index.html');
+
+  // 本番環境ではメニューを削除(DevToolsショートカットも無効化)
+  if (process.env.NODE_ENV !== 'development') {
+    Menu.setApplicationMenu(null);
+  }
 
   // DevTools を開く際にコンソールの警告を抑制
   if (process.env.NODE_ENV === 'development') {
@@ -34,6 +38,18 @@ function createWindow() {
     mainWindow.webContents.on('console-message', (event, level, message) => {
       if (message.includes('Autofill')) {
         event.preventDefault();
+      }
+    });
+
+    mainWindow.webContents.on('before-input-event', (event, input) => {
+      // 本番環境でDevToolsのショートカットを無効化
+      if (process.env.NODE_ENV !== 'development') {
+        if (
+          (input.control || input.meta) && input.shift && input.key.toLowerCase() === 'i' ||
+          input.key === 'F12'
+        ) {
+          event.preventDefault();
+        }
       }
     });
   }
