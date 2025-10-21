@@ -10,7 +10,6 @@ Reflux Converterは、Reflux（リフラックス）で出力されるTSVファ�
 
 - **TSVファイル変換**: Reflux形式のTSVファイルをInfinitas打鍵カウンターのCSV形式に変換
 - **Google Drive連携**: Google Driveに、結果を保存
-- **プレビュー機能**: 変換前にデータの確認が可能
 
 ## システム要件
 
