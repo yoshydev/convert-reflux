@@ -1,0 +1,1 @@
+変更内容を分析して、日本語で「<type>: <変更内容>」の形式で1行のコミットメッセージを生成してください。typeはfeat/fix/refactor/style/docs/chore/perfから選んでください。

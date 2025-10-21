@@ -20,7 +20,7 @@ export async function initializeSettings(elements, state) {
       // ビルド時に認証情報が埋め込まれている場合
       elements.updateAuthStatus(
         '「Google Drive 認証」ボタンをクリックしてください。',
-        'success'
+        'warning'
       );
     }
 

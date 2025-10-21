@@ -1,10 +1,67 @@
 const { google } = require('googleapis');
 const { shell } = require('electron');
 const http = require('http');
+const fs = require('fs');
+const path = require('path');
 const config = require('../utils/config');
 const { isWSL, openUrlInWSL } = require('../utils/wsl');
 
 let oauth2Client = null;
+let authPageTemplate = null;
+
+/**
+ * 認証ページのHTMLテンプレートを読み込む
+ */
+function loadAuthPageTemplate() {
+  if (!authPageTemplate) {
+    const templatePath = path.join(__dirname, 'auth-page.html');
+    authPageTemplate = fs.readFileSync(templatePath, 'utf-8');
+  }
+  return authPageTemplate;
+}
+
+/**
+ * 認証結果ページのHTMLを生成
+ * @param {string} type - 'success', 'error', 'cancelled'
+ * @returns {string} HTML文字列
+ */
+function getAuthPageHTML(type) {
+  const contents = {
+    success: {
+      icon: '✓',
+      iconClass: 'success',
+      title: '認証が完了しました！',
+      message: 'Google Driveへの接続に成功しました。',
+      instruction: 'このウィンドウを閉じて、アプリに戻ってファイルのアップロードを開始できます。'
+    },
+    error: {
+      icon: '✕',
+      iconClass: 'error',
+      title: '認証に失敗しました',
+      message: '認証処理中にエラーが発生しました。',
+      instruction: 'このウィンドウを閉じて、アプリから再度認証をお試しください。問題が解決しない場合は、設定をご確認ください。'
+    },
+    cancelled: {
+      icon: '!',
+      iconClass: 'cancelled',
+      title: '認証がキャンセルされました',
+      message: '認証プロセスが中断されました。',
+      instruction: 'このウィンドウを閉じて、もう一度認証を行う場合はアプリから操作してください。'
+    }
+  };
+
+  const content = contents[type] || contents.error;
+  const template = loadAuthPageTemplate();
+
+  // テンプレートのプレースホルダーを置換
+  return template
+    .replace(/\{\{TITLE\}\}/g, content.title)
+    .replace(/\{\{ICON\}\}/g, content.icon)
+    .replace(/\{\{ICON_CLASS\}\}/g, content.iconClass)
+    .replace(/\{\{MESSAGE\}\}/g, content.message)
+    .replace(/\{\{INSTRUCTION\}\}/g, content.instruction);
+}
+
 
 /**
  * OAuth2クライアントを取得
@@ -63,7 +120,7 @@ function createOAuthCallbackServer(oauth2Client, mainWindow, onSuccess, onError)
 
         if (error) {
           res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-          res.end('<html><body><h1>認証がキャンセルされました</h1><p>このウィンドウを閉じてください。</p></body></html>');
+          res.end(getAuthPageHTML('cancelled'));
           server.close();
           onError(new Error(`認証エラー: ${error}`));
           return;
@@ -78,7 +135,7 @@ function createOAuthCallbackServer(oauth2Client, mainWindow, onSuccess, onError)
 
             // 成功メッセージを表示
             res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-            res.end('<html><body><h1>✅ 認証に成功しました！</h1><p>このウィンドウを閉じてアプリに戻ってください。</p></body></html>');
+            res.end(getAuthPageHTML('success'));
 
             server.close();
 
@@ -90,13 +147,13 @@ function createOAuthCallbackServer(oauth2Client, mainWindow, onSuccess, onError)
             onSuccess({ success: true, message: '認証が完了しました' });
           } catch (tokenError) {
             res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-            res.end('<html><body><h1>❌ トークン取得エラー</h1><p>このウィンドウを閉じてください。</p></body></html>');
+            res.end(getAuthPageHTML('error'));
             server.close();
             onError(tokenError);
           }
         } else {
           res.writeHead(400, { 'Content-Type': 'text/html; charset=utf-8' });
-          res.end('<html><body><h1>認証コードが見つかりません</h1></body></html>');
+          res.end(getAuthPageHTML('error'));
           server.close();
           onError(new Error('認証コードが見つかりません'));
         }
@@ -104,7 +161,7 @@ function createOAuthCallbackServer(oauth2Client, mainWindow, onSuccess, onError)
     } catch (err) {
       console.error('Server error:', err);
       res.writeHead(500, { 'Content-Type': 'text/html; charset=utf-8' });
-      res.end('<html><body><h1>サーバーエラー</h1></body></html>');
+      res.end(getAuthPageHTML('error'));
       server.close();
       onError(err);
     }

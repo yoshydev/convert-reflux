@@ -1,6 +1,7 @@
 /**
  * 認証関連のイベントハンドラー
  */
+import { updateSetupStatus } from '../settings.js';
 
 /**
  * Google Drive認証ハンドラー
@@ -29,6 +30,7 @@ export async function handleAuthenticate(elements, state) {
       state.setAuthenticated(true);
       elements.updateAuthStatus('✓ 認証成功! Google Driveにアップロードできます。', 'success');
       elements.updateAuthUI(true);
+      updateSetupStatus(elements, state);
 
       if (state.convertedFilePath) {
         elements.uploadBtn.disabled = false;
@@ -53,6 +55,7 @@ export function handleAuthSuccess(elements, state, data) {
   state.setAuthenticated(true);
   elements.updateAuthUI(true);
   elements.updateAuthStatus('✓ 認証成功! Google Driveにアップロードできます。', 'success');
+  updateSetupStatus(elements, state);
 
   if (state.convertedFilePath) {
     elements.uploadBtn.disabled = false;
@@ -79,8 +82,9 @@ export async function handleDisconnect(elements, state) {
       state.setAuthenticated(false);
       state.setTokens(null);
 
-      elements.updateAuthStatus('連携を解除しました', 'info');
+      elements.updateAuthStatus('連携を解除しました', 'warning');
       elements.updateAuthUI(false);
+      updateSetupStatus(elements, state);
       elements.uploadBtn.disabled = true;
       elements.disconnectBtn.disabled = false;
     } else {
