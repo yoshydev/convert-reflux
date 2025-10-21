@@ -39,7 +39,10 @@ export function useAuth() {
     initializeAuth()
 
     // 認証成功イベントのリスナーを設定
-    const unsubscribe = window.electronAPI.onAuthSuccess(() => {
+    const unsubscribe = window.electronAPI.onAuthSuccess((data) => {
+      // トークン情報を受け取るが、現在は使用していない
+      // 将来的にトークンの有効期限チェックなどに使用可能
+      void data.tokens
       setIsAuthenticated(true)
       setAuthStatus({
         message: '✓ 認証成功! Google Driveにアップロードできます。',
