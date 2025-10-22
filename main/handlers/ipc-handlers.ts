@@ -2,6 +2,7 @@ import { ipcMain, dialog, BrowserWindow } from 'electron';
 
 import * as auth from '../services/auth';
 import * as drive from '../services/drive';
+import { checkForUpdates } from '../services/updater';
 import * as config from '../utils/config';
 import { convertTsvToCsv } from '../utils/converter';
 
@@ -130,6 +131,17 @@ export function registerIpcHandlers(mainWindow: BrowserWindow): void {
       return { success: false, error: 'No focused window found' };
     } catch (error) {
       console.error('Close window error:', error);
+      return { success: false, error: (error as Error).message };
+    }
+  });
+
+  // アップデートを手動でチェック
+  ipcMain.handle('check-for-updates', async () => {
+    try {
+      checkForUpdates();
+      return { success: true };
+    } catch (error) {
+      console.error('Check for updates error:', error);
       return { success: false, error: (error as Error).message };
     }
   });

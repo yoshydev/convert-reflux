@@ -6,6 +6,7 @@ import serve from 'electron-serve'
 import { registerIpcHandlers } from './handlers'
 import { createWindow } from './helpers'
 import * as auth from './services/auth'
+import { initAutoUpdater } from './services/updater'
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -40,6 +41,9 @@ if (isProd) {
     await mainWindow.loadURL(`http://localhost:${port}/home`)
     mainWindow.webContents.openDevTools()
   }
+
+  // 自動アップデート機能を初期化
+  initAutoUpdater(mainWindow)
 })()
 
 app.on('window-all-closed', () => {
