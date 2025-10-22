@@ -145,4 +145,10 @@ export function registerIpcHandlers(mainWindow: BrowserWindow): void {
       return { success: false, error: (error as Error).message };
     }
   });
+
+  // アプリのバージョンを取得
+  ipcMain.handle('get-app-version', async () => {
+    const { app } = require('electron');
+    return app.getVersion();
+  });
 }

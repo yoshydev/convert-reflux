@@ -111,30 +111,11 @@ export const UpdateNotification: React.FC = () => {
     }
   }, [])
 
-  const handleCheckForUpdates = () => {
-    if (window.electronAPI) {
-      window.electronAPI.checkForUpdates().catch((error) => {
-        // エラーをコンソールに出力してデバッグを容易に
-        // eslint-disable-next-line no-console
-        console.error('アップデート確認中にエラーが発生しました:', error)
-        // メインプロセスでも処理されますが、レンダラー側でもログを残す
-      })
-    }
-  }
-
   const { status, info, progress } = updateState
 
+  // idle状態では何も表示しない（アップデート確認ボタンはFooterに移動）
   if (status === 'idle') {
-    return (
-      <div className="text-center">
-        <button
-          onClick={handleCheckForUpdates}
-          className="text-sm text-blue-600 hover:text-blue-800 underline"
-        >
-          アップデートを確認
-        </button>
-      </div>
-    )
+    return null
   }
 
   return (
@@ -202,12 +183,9 @@ export const UpdateNotification: React.FC = () => {
           <p className="text-sm font-semibold text-red-900">
             アップデートの確認に失敗しました
           </p>
-          <button
-            onClick={handleCheckForUpdates}
-            className="mt-2 text-xs text-red-700 hover:text-red-900 underline"
-          >
-            再試行
-          </button>
+          <p className="text-xs text-red-700 mt-1">
+            フッターのアップデート確認ボタンから再試行してください
+          </p>
         </div>
       )}
     </div>
