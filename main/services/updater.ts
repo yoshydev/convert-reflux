@@ -2,15 +2,41 @@ import { BrowserWindow, dialog } from 'electron'
 import log from 'electron-log'
 import { autoUpdater } from 'electron-updater'
 
+// ログの型定義
+interface LoggerWithTransports {
+  transports: {
+    file: {
+      level: string
+    }
+  }
+}
+
+// ロガーが期待する構造を持っているかチェックする型ガード
+function isLoggerWithTransports(logger: unknown): logger is LoggerWithTransports {
+  return (
+    typeof logger === 'object' &&
+    logger !== null &&
+    'transports' in logger &&
+    typeof (logger as { transports: unknown }).transports === 'object' &&
+    (logger as { transports: unknown }).transports !== null &&
+    'file' in (logger as { transports: { file: unknown } }).transports &&
+    typeof (logger as { transports: { file: unknown } }).transports.file === 'object' &&
+    (logger as { transports: { file: unknown } }).transports.file !== null &&
+    'level' in (logger as { transports: { file: { level: unknown } } }).transports.file
+  )
+}
+
 // ログ設定
 autoUpdater.logger = log
-if (autoUpdater.logger && 'transports' in autoUpdater.logger) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (autoUpdater.logger as any).transports.file.level = 'info'
+if (isLoggerWithTransports(autoUpdater.logger)) {
+  autoUpdater.logger.transports.file.level = 'info'
 }
 
 // 開発環境ではアップデートをチェックしない
 const isDev = process.env.NODE_ENV !== 'production'
+
+// 起動時にアップデートチェックを開始するまでの遅延時間（ミリ秒）
+const INITIAL_UPDATE_CHECK_DELAY_MS = 3000
 
 let mainWindow: BrowserWindow | null = null
 
@@ -127,7 +153,7 @@ export function initAutoUpdater(window: BrowserWindow): void {
   // 起動時にアップデートをチェック
   setTimeout(() => {
     checkForUpdates()
-  }, 3000) // 3秒待ってからチェック
+  }, INITIAL_UPDATE_CHECK_DELAY_MS)
 }
 
 /**

@@ -12,6 +12,9 @@ interface ProgressInfo {
   total: number
 }
 
+// 通知を自動的に非表示にするまでの時間（ミリ秒）
+const AUTO_HIDE_NOTIFICATION_DELAY_MS = 3000
+
 export const UpdateNotification: React.FC = () => {
   const [updateStatus, setUpdateStatus] = useState<string | null>(null)
   const [updateInfo, setUpdateInfo] = useState<UpdateInfo | null>(null)
@@ -22,8 +25,16 @@ export const UpdateNotification: React.FC = () => {
       return
     }
 
+    let autoHideTimeoutId: NodeJS.Timeout | null = null
+
     const unsubscribe = window.electronAPI.onUpdaterStatus((data) => {
       const { event, data: eventData } = data
+
+      // 既存のタイムアウトをクリア
+      if (autoHideTimeoutId !== null) {
+        clearTimeout(autoHideTimeoutId)
+        autoHideTimeoutId = null
+      }
 
       setUpdateStatus(event)
 
@@ -39,16 +50,20 @@ export const UpdateNotification: React.FC = () => {
           break
         case 'update-not-available':
         case 'error':
-          setTimeout(() => {
+          autoHideTimeoutId = setTimeout(() => {
             setUpdateStatus(null)
             setUpdateInfo(null)
-          }, 3000)
+          }, AUTO_HIDE_NOTIFICATION_DELAY_MS)
           break
       }
     })
 
     return () => {
       unsubscribe()
+      // コンポーネントのアンマウント時にタイムアウトをクリーンアップ
+      if (autoHideTimeoutId !== null) {
+        clearTimeout(autoHideTimeoutId)
+      }
     }
   }, [])
 
