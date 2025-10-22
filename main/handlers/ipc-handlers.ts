@@ -1,4 +1,4 @@
-import { ipcMain, dialog, BrowserWindow } from 'electron';
+import { ipcMain, dialog, BrowserWindow, app } from 'electron';
 
 import * as auth from '../services/auth';
 import * as drive from '../services/drive';
@@ -148,7 +148,6 @@ export function registerIpcHandlers(mainWindow: BrowserWindow): void {
 
   // アプリのバージョンを取得
   ipcMain.handle('get-app-version', async () => {
-    const { app } = require('electron');
     return app.getVersion();
   });
 }
