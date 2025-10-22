@@ -56,6 +56,9 @@ export interface ElectronAPI {
 
   // アップデーターステータスのリスナー
   onUpdaterStatus: (callback: (data: { event: string; data?: unknown }) => void) => () => void;
+
+  // アプリのバージョンを取得
+  getAppVersion: () => Promise<string>;
 }
 
 const electronAPI: ElectronAPI = {
@@ -83,7 +86,8 @@ const electronAPI: ElectronAPI = {
     return () => {
       ipcRenderer.removeListener('updater-status', subscription);
     };
-  }
+  },
+  getAppVersion: () => ipcRenderer.invoke('get-app-version')
 };
 
 contextBridge.exposeInMainWorld('electronAPI', electronAPI);

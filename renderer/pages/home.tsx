@@ -95,11 +95,12 @@ export default function HomePage() {
             )}
           </main>
 
-          {/* アップデート通知 */}
+          {/* アップデート通知（通知がある時のみ表示） */}
           <div className="mt-6">
             <UpdateNotification />
           </div>
 
+          {/* フッター（バージョン情報とアップデート確認ボタン） */}
           <Footer />
         </div>
       </div>

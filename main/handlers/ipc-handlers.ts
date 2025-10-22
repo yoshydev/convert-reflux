@@ -1,4 +1,4 @@
-import { ipcMain, dialog, BrowserWindow } from 'electron';
+import { ipcMain, dialog, BrowserWindow, app } from 'electron';
 
 import * as auth from '../services/auth';
 import * as drive from '../services/drive';
@@ -144,5 +144,10 @@ export function registerIpcHandlers(mainWindow: BrowserWindow): void {
       console.error('Check for updates error:', error);
       return { success: false, error: (error as Error).message };
     }
+  });
+
+  // アプリのバージョンを取得
+  ipcMain.handle('get-app-version', async () => {
+    return app.getVersion();
   });
 }
