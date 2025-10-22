@@ -50,6 +50,12 @@ export interface ElectronAPI {
 
   // ウィンドウを閉じる
   closeWindow: () => Promise<{ success: boolean; error?: string }>;
+
+  // アップデートをチェック
+  checkForUpdates: () => Promise<{ success: boolean; error?: string }>;
+
+  // アップデーターステータスのリスナー
+  onUpdaterStatus: (callback: (data: { event: string; data?: unknown }) => void) => () => void;
 }
 
 const electronAPI: ElectronAPI = {
@@ -69,7 +75,15 @@ const electronAPI: ElectronAPI = {
       ipcRenderer.removeListener('auth-success', subscription);
     };
   },
-  closeWindow: () => ipcRenderer.invoke('close-window')
+  closeWindow: () => ipcRenderer.invoke('close-window'),
+  checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
+  onUpdaterStatus: (callback) => {
+    const subscription = (_event: IpcRendererEvent, data: { event: string; data?: unknown }) => callback(data);
+    ipcRenderer.on('updater-status', subscription);
+    return () => {
+      ipcRenderer.removeListener('updater-status', subscription);
+    };
+  }
 };
 
 contextBridge.exposeInMainWorld('electronAPI', electronAPI);

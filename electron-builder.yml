@@ -31,3 +31,4 @@ publish:
   provider: github
   owner: yoshydev
   repo: convert-reflux
+  releaseType: release

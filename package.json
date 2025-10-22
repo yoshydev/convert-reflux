@@ -2,7 +2,7 @@
   "private": true,
   "name": "reflux-converter",
   "description": "A desktop application to convert Reflux TSV files to Infinitas counter format.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "yoshydev <24353896+yoshydev@users.noreply.github.com>",
   "license": "MIT",
   "main": "app/background.js",
@@ -19,13 +19,18 @@
     "lint:check": "eslint main renderer --ext .ts,.tsx,.js,.jsx --max-warnings 0",
     "type-check": "tsc --noEmit",
     "dev:lint": "npm run type-check && npm run lint",
-    "prebuild:check": "npm run type-check && npm run lint:check"
+    "prebuild:check": "npm run type-check && npm run lint:check",
+    "release:patch": "npm version patch && git push && git push --tags",
+    "release:minor": "npm version minor && git push && git push --tags",
+    "release:major": "npm version major && git push && git push --tags"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "dotenv": "^16.4.0",
+    "electron-log": "^5.4.3",
     "electron-serve": "^1.3.0",
     "electron-store": "^8.2.0",
+    "electron-updater": "^6.6.2",
     "googleapis": "^128.0.0",
     "iconv-lite": "^0.7.0",
     "lucide-react": "^0.546.0"

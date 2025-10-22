@@ -2,7 +2,7 @@ import { Settings, Upload } from 'lucide-react'
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
 
-import { Tabs } from '../components'
+import { Tabs, UpdateNotification } from '../components'
 import { Header, SetupStatus, UploadTab, Footer } from '../components/sections'
 import { SettingsTab } from '../components/setup'
 import { useAuth, useTsvFile, useUpload } from '../hooks'
@@ -94,6 +94,11 @@ export default function HomePage() {
               />
             )}
           </main>
+
+          {/* アップデート通知 */}
+          <div className="mt-6">
+            <UpdateNotification />
+          </div>
 
           <Footer />
         </div>
