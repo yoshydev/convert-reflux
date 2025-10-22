@@ -95,12 +95,12 @@ export default function HomePage() {
             )}
           </main>
 
-          <Footer />
-
           {/* アップデート通知 */}
           <div className="mt-6">
             <UpdateNotification />
           </div>
+
+          <Footer />
         </div>
       </div>
     </React.Fragment>
